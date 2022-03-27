@@ -7,21 +7,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
-@Table(name = "user")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Data
+@Table(name="user")
 public class User {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
-    private String name;
+    private String  name;
 
     private String email;
 
-    @OneToMany
-    private Set<Category> category;
 }
