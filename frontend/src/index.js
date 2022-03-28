@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import Category from './Category';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Category />
   </React.StrictMode>,
   document.getElementById('root')
 );
