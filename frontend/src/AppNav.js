@@ -10,7 +10,7 @@ class AppNav extends Component {
           <NavbarBrand href="/">Expesen Tracker Application</NavbarBrand>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <NavLink href="/home">Home</NavLink>
+              <NavLink href="/">Home</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/categories">Categories</NavLink>
