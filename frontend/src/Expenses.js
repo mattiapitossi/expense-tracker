@@ -1,16 +1,47 @@
 import React, { Component } from "react";
-import { Container, Form, FormGroup } from "reactstrap";
+import { Container, Form, FormGroup, Input, Label, Button } from "reactstrap";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import {Link} from "react-router-dom";
 import AppNav from "./AppNav";
 
 class Expenses extends Component {
-  state = {};
+  state = {
+    date: new Date(),
+    isLoading : true,
+    expenses : [],
+    Categories : []
+  };
+
+  async componentDidMount() {
+    const response = await fetch('/api/category');
+    const body = await response.json();
+
+    this.setState({expenses : body , isLoading : false});
+  }
+
   render() {
+    const title = <h3>Add Expense</h3>
+    const {Categories, isLoading} = this.state;
+
+    if(isLoading) 
+      return(<div>Loading...</div>)
+
+    let optionList = 
+      Categories.map ( category =>
+        <option id = {category.id} > 
+          {category.name}
+        </option>
+      )
+
     return (
       <div>
-        <AppNav />
+        <AppNav/>
+
         <Container>
-        <h2>Expenses</h2>
-          <Form>
+          {title}
+
+          <Form onSubmit = {this.handleSubmit}>
             <FormGroup>
               <label for = "title">Title</label>
               <input type = "text" name = "title" id = "title" onChange={this.handleChange}/>
@@ -18,12 +49,15 @@ class Expenses extends Component {
 
             <FormGroup>
               <label for = "category">Category</label>
+              <select>
+                {optionList}
+              </select>
               <input type = "text" name = "category" id = "category" onChange={this.handleChange}/>
             </FormGroup>
 
             <FormGroup>
               <label for = "date">Expense Date</label>
-              <input type = "text" name = "date" id = "date" onChange={this.handleChange}/>
+              <DatePicker selected = {this.state.date} onChange={this.handleChange}/>
             </FormGroup>
 
             <FormGroup>
