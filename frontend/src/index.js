@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App"
-import Category from "./Category";
+import App from "./App";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

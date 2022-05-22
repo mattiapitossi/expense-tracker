@@ -32,7 +32,7 @@ public class ExpenseController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/expense")
+    @PostMapping("/expenses")
     ResponseEntity<Expense> createExpense(@Valid @RequestBody Expense expense) throws URISyntaxException {
         Expense result = expenseRepository.save(expense);
 
