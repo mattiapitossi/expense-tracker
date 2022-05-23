@@ -1,7 +1,8 @@
-package com.mattiap.expensetracker.controller;
+package com.expensetracker.controller;
 
-import com.mattiap.expensetracker.model.Category;
-import com.mattiap.expensetracker.repository.CategoryRepository;
+import com.expensetracker.model.Category;
+import com.expensetracker.repository.CategoryRepository;
+import com.expensetracker.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,16 +12,18 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @GetMapping("/category")
-    Collection<Category> readCategories() {
-        return categoryRepository.findAll();
+    List<Category> readCategories() {
+        return categoryService.getAllCategories();
     }
 
     @GetMapping("/category/{id}")
