@@ -1,8 +1,7 @@
-package com.mattiap.expensetracker.controller;
+package com.expensetracker.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mattiap.expensetracker.model.Expense;
-import com.mattiap.expensetracker.repository.ExpenseRepository;
+import com.expensetracker.model.Expense;
+import com.expensetracker.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")

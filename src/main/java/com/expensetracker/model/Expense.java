@@ -1,6 +1,5 @@
-package com.mattiap.expensetracker.model;
+package com.expensetracker.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor

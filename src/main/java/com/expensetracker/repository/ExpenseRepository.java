@@ -1,6 +1,6 @@
-package com.mattiap.expensetracker.repository;
+package com.expensetracker.repository;
 
-import com.mattiap.expensetracker.model.Expense;
+import com.expensetracker.model.Expense;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

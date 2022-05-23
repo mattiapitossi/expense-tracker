@@ -1,7 +1,7 @@
-package com.mattiap.expensetracker.controller;
+package com.expensetracker.controller;
 
-import com.mattiap.expensetracker.model.Message;
-import com.mattiap.expensetracker.model.OutputMessage;
+import com.expensetracker.model.Message;
+import com.expensetracker.model.OutputMessage;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

@@ -1,4 +1,4 @@
-package com.mattiap.expensetracker.model;
+package com.expensetracker.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

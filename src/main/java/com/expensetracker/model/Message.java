@@ -1,4 +1,4 @@
-package com.mattiap.expensetracker.model;
+package com.expensetracker.model;
 
 
 public record Message(String from, String text) {
