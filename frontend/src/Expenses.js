@@ -10,12 +10,19 @@ class Expenses extends Component {
 
   emptyItem = {
     description : "",
-    expensedate : new Date(),
-    id : 104,
+    expense_date : new Date(),
     location : "",
-    categories : {
+    value: 0,
+    typeOfPayment: "",
+    typeOfTransaction: "",
+    category : {
       id : 1, 
-      name : "Travel"
+      name : "Food"
+    },
+    user: {
+      id : 1, 
+      username : "admin",
+      password : "1234"
     }
   }
 
@@ -136,7 +143,7 @@ class Expenses extends Component {
 
             <FormGroup>
               <Label for="category" >Category</Label>
-                <select onChange={this.handleChange}>
+                <select onChange={this.handleChange} name = "category" id = "category">
                   {optionList}
                 </select>
             </FormGroup>
@@ -152,10 +159,32 @@ class Expenses extends Component {
             </FormGroup>
 
             <FormGroup>
+              <Label for = "typeOfTransaction">Type of Transaction</Label>
+              <select onChange={this.handleChange}  name = "typeOfTransaction" id = "typeOfTransaction">
+                  <option>In</option>
+                  <option>Out</option>
+                  <option>InOut</option>
+                  <option>OutIn</option>
+              </select>
+            </FormGroup>
+
+            <FormGroup>
+              <Label for = "typeOfPayment">Type of Payment</Label>
+              <select onChange={this.handleChange} id = "typeOfPayment" name = "typeOfPayment">
+                  <option>Cash</option>
+                  <option>Card</option>
+              </select>
+            </FormGroup>
+
+            <FormGroup>
+              <Label for = "value">Money</Label>
+              <Input type="number" step="0.01" name = "value" id = "value" onChange={this.handleChange}/>
+            </FormGroup>
+
+            <FormGroup>
               <Button color = "primary" type = "submit">Save</Button>{' '}
               <Button color = "secondary" tag = {Link} to = "/categories">Cancel</Button>{' '}
             </FormGroup>
-
           </Form>
         </Container>
 

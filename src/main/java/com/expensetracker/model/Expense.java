@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class Expense {
 
     @JsonProperty("expense_date")
     @Column(name = "expense_date")
-    private Instant expenseDate;
+    private LocalDateTime expenseDate;
 
     @Column(name = "description")
     private String description;
@@ -41,9 +42,10 @@ public class Expense {
     private Double value;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 }
