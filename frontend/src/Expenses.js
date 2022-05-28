@@ -10,7 +10,6 @@ class Expenses extends Component {
 
   emptyItem = {
     description : "",
-    description : "",
     expense_date : new Date(),
     location : "",
     value: 0,
