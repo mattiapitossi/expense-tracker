@@ -26,6 +26,9 @@ public class Expense {
     @Column(name = "expense_date")
     private LocalDateTime expenseDate;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "description")
     private String description;
 

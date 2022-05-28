@@ -10,6 +10,7 @@ class Expenses extends Component {
 
   emptyItem = {
     description : "",
+    description : "",
     expense_date : new Date(),
     location : "",
     value: 0,
@@ -136,8 +137,13 @@ class Expenses extends Component {
           {title}
 
           <Form onSubmit = {this.handleSubmit}>
+          <FormGroup>
+              <Label for="title">Title</Label>
+              <Input type="title" name="title" id="title" onChange={this.handleChange} autoComplete="name"/>       
+            </FormGroup>
+
             <FormGroup>
-              <Label for="description">Title</Label>
+              <Label for="description">Description</Label>
               <Input type="description" name="description" id="description" onChange={this.handleChange} autoComplete="name"/>       
             </FormGroup>
 
