@@ -5,24 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Data
-@Table(name="user")
-public class User {
+@Table(name="cards")
+public class Card {
 
     @Id
     @Column(name = "id")
     @GeneratedValue
-    private String id;
+    public Integer id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "nome")
+    public String nome;
 
-    @Column(name = "password")
-    private String password;
-
+    @Column(name = "last_four_digits")
+    public String lastFourDigits;
 }
