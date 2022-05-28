@@ -1,13 +1,13 @@
 package com.expensetracker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.expensetracker.type_enum.TypePayment;
+import com.expensetracker.type_enum.TypeTransaction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,10 +36,12 @@ public class Expense {
     private String location;
 
     @Column(name = "type_of_transaction")
-    private String typeOfTransaction;
+    @Enumerated(EnumType.ORDINAL)
+    private TypeTransaction typeOfTransaction;
 
     @Column(name = "type_of_payment")
-    private String typeOfPayment;
+    @Enumerated(EnumType.ORDINAL)
+    private TypePayment typeOfPayment;
 
     @Column(name = "value")
     private Double value;
