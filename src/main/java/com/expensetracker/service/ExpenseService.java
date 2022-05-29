@@ -13,6 +13,10 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
 
+    public boolean expenseWithCategoryExist(Integer categoryId) {
+        return expenseRepository.existsByCategory_Id(categoryId);
+    }
+
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
@@ -21,7 +25,7 @@ public class ExpenseService {
         expenseRepository.deleteById(id);
     }
 
-    public Expense postNewExpense(Expense expense) {
+    public Expense createNewExpense(Expense expense) {
         return expenseRepository.save(expense);
     }
 }

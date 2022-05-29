@@ -60,6 +60,21 @@ class Category extends Component {
     console.log(this.state);
   }
 
+  async remove(id) {
+    await fetch(`/api/category/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application",
+        "Content-Type": "application/json"
+      }
+
+    }).then(() => {
+      let updateCategories = [...this.state.Categories].filter(i => i.id !== id);
+      this.setState({ Categories: updateCategories })
+    });
+
+  }
+
   render() {
 
     const { Categories, isLoading } = this.state;
@@ -112,6 +127,7 @@ class Category extends Component {
     Categories.map((category) => (
       <tr key={category.id}>
         <td>{category.name}</td>
+        <td><Button size="sm" color="danger" onClick={() => this.remove(category.id)}>Delete</Button></td>
       </tr>
     ))
 
