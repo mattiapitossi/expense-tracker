@@ -13,8 +13,8 @@ class Expenses extends Component {
     expense_date : new Date(),
     location : "",
     value: 0,
-    typeOfPayment: "",
-    typeOfTransaction: "",
+    typeOfPayment: "CARD",
+    typeOfTransaction: "OUT",
     category : {
       id : 1, 
       name : "Food"
@@ -166,8 +166,8 @@ class Expenses extends Component {
             <FormGroup>
               <Label for = "typeOfTransaction">Type of Transaction</Label>
               <select onChange={this.handleChange}  name = "typeOfTransaction" id = "typeOfTransaction">
-                  <option>In</option>
                   <option>Out</option>
+                  <option>In</option>
                   <option>InOut</option>
                   <option>OutIn</option>
               </select>
@@ -176,8 +176,8 @@ class Expenses extends Component {
             <FormGroup>
               <Label for = "typeOfPayment">Type of Payment</Label>
               <select onChange={this.handleChange} id = "typeOfPayment" name = "typeOfPayment">
-                  <option>Cash</option>
                   <option>Card</option>
+                  <option>Cash</option>
               </select>
             </FormGroup>
 

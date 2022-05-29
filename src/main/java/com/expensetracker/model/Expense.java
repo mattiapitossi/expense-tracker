@@ -36,12 +36,12 @@ public class Expense {
     private String location;
 
     @Column(name = "type_of_transaction")
-    @Enumerated(EnumType.ORDINAL)
-    private TypeTransaction typeOfTransaction;
+//  TODO  @Enumerated(EnumType.ORDINAL)
+    private String typeOfTransaction;
 
     @Column(name = "type_of_payment")
-    @Enumerated(EnumType.ORDINAL)
-    private TypePayment typeOfPayment;
+//  TODO  @Enumerated(EnumType.ORDINAL)
+    private String typeOfPayment;
 
     @Column(name = "value")
     private Double value;
