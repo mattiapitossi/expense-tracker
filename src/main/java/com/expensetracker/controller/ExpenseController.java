@@ -1,7 +1,7 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.model.Expense;
-import com.expensetracker.repository.ExpenseRepository;
+import com.expensetracker.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExpenseController {
 
-    private final ExpenseRepository expenseRepository;
+    private final ExpenseService expenseService;
 
     @GetMapping("/expenses")
     List<Expense> getExpenses() {
-        return expenseRepository.findAll();
+        return expenseService.getAllExpenses();
     }
 
     @DeleteMapping("/expenses/{id}")
     ResponseEntity<?> deleteExpense(@PathVariable Integer id) {
-        expenseRepository.deleteById(id);
+        expenseService.deleteExpenseById(id);
 
         return ResponseEntity.ok().build();
     }
@@ -33,7 +33,7 @@ public class ExpenseController {
     @PostMapping("/expenses")
     ResponseEntity<Expense> createExpense(@Valid @RequestBody Expense expense) throws URISyntaxException {
         System.out.println(expense);
-        Expense result = expenseRepository.save(expense);
+        Expense result = expenseService.createNewExpense(expense);
         return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
     }
 

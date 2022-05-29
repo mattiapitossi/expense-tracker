@@ -3,6 +3,7 @@ package com.expensetracker.controller;
 import com.expensetracker.model.Category;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.service.CategoryService;
+import com.expensetracker.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,37 +18,39 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
-    private final CategoryService categoryService;
+
+    private final CategoryServiceImpl categoryService;
 
     @GetMapping("/category")
     List<Category> readCategories() {
-        return categoryRepository.findAll();
+        return categoryService.getAllCategories();
     }
 
     @GetMapping("/category/{id}")
     ResponseEntity<?> readCategoryById(@PathVariable Integer id) {
-        return categoryRepository
-                .findById(id)
+        return categoryService
+                .findCategoryById(id)
                 .map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/category")
     ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
-        var res = categoryRepository.save(category);
+        System.out.println(category);
+        var res = categoryService.createNewCategory(category);
         return ResponseEntity.created(new URI("/api/category" + res.getId())).body(res);
     }
 
     @PutMapping("/category")
     ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category) {
-        var res = categoryRepository.save(category);
+        var res = categoryService.modifyCategory(category);
         return ResponseEntity.ok().body(res);
     }
 
-    @DeleteMapping("/category")
-    ResponseEntity<?> deleteCategory(@PathVariable Category category) {
-        categoryRepository.delete(category);
+    @DeleteMapping("/category/{id}")
+    ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
+        System.out.println("category: " + id);
+        categoryService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
