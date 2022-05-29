@@ -2,7 +2,7 @@ package com.expensetracker.controller;
 
 import com.expensetracker.model.Expense;
 import com.expensetracker.repository.ExpenseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ExpenseController {
 
-    @Autowired
-    private ExpenseRepository expenseRepository;
+    private final ExpenseRepository expenseRepository;
 
     @GetMapping("/expenses")
     List<Expense> getExpenses() {
