@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryRepository categoryRepository;
-    private final CategoryService categoryService;
 
     @GetMapping("/category")
     List<Category> readCategories() {
@@ -35,6 +34,7 @@ public class CategoryController {
 
     @PostMapping("/category")
     ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
+        System.out.println(category);
         var res = categoryRepository.save(category);
         return ResponseEntity.created(new URI("/api/category" + res.getId())).body(res);
     }
@@ -45,9 +45,10 @@ public class CategoryController {
         return ResponseEntity.ok().body(res);
     }
 
-    @DeleteMapping("/category")
-    ResponseEntity<?> deleteCategory(@PathVariable Category category) {
-        categoryRepository.delete(category);
+    @DeleteMapping("/category/{id}")
+    ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
+        System.out.println("category: " + id);
+        categoryRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
