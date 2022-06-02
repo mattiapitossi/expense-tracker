@@ -3,10 +3,14 @@
 @import './_generals.scss';
 
 header {
+   width: 100%;
    text-align: center;
    background-color: $red;
    display: flex;
    justify-content: center;
+   position: fixed;
+   top: 0;
+   left: 0;
 
    .nav_item {
       text-transform: uppercase;
@@ -23,6 +27,8 @@ header {
 }
 
 .pop_up_form {
+   display: flex;
+   justify-content: center;
    max-height: 70vh;
    overflow-y: auto;
    position: fixed;
