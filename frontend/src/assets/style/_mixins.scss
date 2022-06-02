@@ -1,0 +1,26 @@
+@mixin center($type: 'classic'){
+
+   display: flex;
+   
+   @if $type == 'center-x'{
+     justify-content: center;
+   } @else if $type == 'center-y'{
+     align-items: center;
+   } @else if $type == 'center-xy'{
+     align-items: center;
+     justify-content: center;
+   } @else if $type == 'y-center-x-sx'{
+      align-items: center;
+      justify-content: flex-start;
+   } @else if $type == 'y-center-x-dx'{
+       align-items: center;
+       justify-content: flex-end;
+   } @else if $type == 'y-center-x-between'{
+       align-items: center;
+       justify-content: space-between;
+   }@else if $type == 'y-center-x-around'{
+       align-items: center;
+       justify-content: space-around;
+   }
+
+}
