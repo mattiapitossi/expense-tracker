@@ -1,6 +1,8 @@
 <template>
    <main class="container">
-      <h1>HOME</h1>
+      <div class="py-5">
+         <h1>HOME</h1>
+      </div>
    </main>
 </template>
 
