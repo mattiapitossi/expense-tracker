@@ -1,7 +1,11 @@
 <template>
-   <main>
+   <main class="container">
+      <h1>HOME</h1>
    </main>
 </template>
 
-<script setup>
+<script>
+export default {
+   name: "Home"
+}
 </script>
