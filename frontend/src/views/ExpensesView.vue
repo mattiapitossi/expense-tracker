@@ -113,7 +113,7 @@
                      <button class="btn btn-success mx-2">
                         <i class="fa-regular fa-clone"></i>
                      </button>
-                     <button class="btn btn-danger mx-2">
+                     <button @click="deleteExpense(expense.id)" class="btn btn-danger mx-2">
                         <i class="fa-solid fa-trash"></i>
                      </button>
                   </td>
@@ -248,6 +248,16 @@ export default {
             this.expenses = response.data;
             this.isLoading = false;
          });
+      },
+
+      deleteExpense(expenseId) {
+         this.axios.delete("api/expenses/" + expenseId)
+            .then(response => {
+               this.getExpenses();
+            })
+            .catch(error => {
+               console.log(error);
+            })
       }
    },
 
