@@ -82,3 +82,23 @@ import SupportIcon from './icons/IconSupport.vue'
     <a target="_blank" href="https://vuejs.org/sponsor/">becoming a sponsor</a>.
   </WelcomeItem>
 </template>
+
+<script>
+export default {
+  name: "TheWelcome",
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+
+  },
+  mounted() {
+    this.axios.get("/api/expenses")
+      .then(response => {
+        console.log(response.data);
+      })
+  }
+}
+</script>
