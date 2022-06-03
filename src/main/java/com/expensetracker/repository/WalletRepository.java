@@ -1,13 +1,13 @@
 package com.expensetracker.repository;
 
+import com.expensetracker.model.Category;
 import com.expensetracker.model.Expense;
+import com.expensetracker.model.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
+public interface WalletRepository extends JpaRepository<Wallet, Integer> {
 
-    public boolean existsByCategory_Id(Integer id);
-
-    public boolean existsByWallet_Id(Integer id);
+    Wallet findByName(String name);
 }

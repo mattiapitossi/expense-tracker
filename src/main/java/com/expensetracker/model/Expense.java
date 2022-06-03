@@ -1,8 +1,5 @@
 package com.expensetracker.model;
 
-import com.expensetracker.type_enum.TypePayment;
-import com.expensetracker.type_enum.TypeTransaction;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
@@ -11,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -29,9 +25,6 @@ public class Expense {
     @Column(name = "expense_date")
     private LocalDate expenseDate;
 
-    @Column(name = "title")
-    private String title;
-
     @Column(name = "description")
     private String description;
 
@@ -42,10 +35,6 @@ public class Expense {
 //  TODO  @Enumerated(EnumType.ORDINAL)
     private String typeOfTransaction;
 
-    @Column(name = "type_of_payment")
-//  TODO  @Enumerated(EnumType.ORDINAL)
-    private String typeOfPayment;
-
     @Column(name = "value")
     private Double value;
 
@@ -54,8 +43,12 @@ public class Expense {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "secondary_category_id")
+    private SecondaryCategory secondaryCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
 
     @JsonSetter
     public void setCategory(String category) {
@@ -64,4 +57,24 @@ public class Expense {
     }
 
     public void setCategory(Category category) { this.category = category; }
+
+    @JsonSetter
+    public void setSecondaryCategory(String secondaryCategory) {
+        this.secondaryCategory = new SecondaryCategory();
+        this.secondaryCategory.setName(secondaryCategory);
+    }
+
+    public void setSecondaryCategory(SecondaryCategory secondaryCategory) {
+        this.secondaryCategory = secondaryCategory;
+    }
+
+    @JsonSetter
+    public void setWallet(String wallet) {
+        this.wallet = new Wallet();
+        this.wallet.setName(wallet);
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
 }

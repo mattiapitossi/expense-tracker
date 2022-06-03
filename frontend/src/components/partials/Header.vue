@@ -9,8 +9,8 @@
       <RouterLink class="nav_item" :to="{name: 'categories'}">
          Categories
       </RouterLink>
-      <RouterLink class="nav_item" to="#">
-         Wallet
+      <RouterLink class="nav_item" :to="{name: 'wallets'}">
+         Wallets
       </RouterLink>
    </header>
 </template>
