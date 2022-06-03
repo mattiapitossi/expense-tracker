@@ -56,7 +56,7 @@ public class ExpenseService {
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         expense.setCategory(category);
 
-        if (expense.getSecondaryCategory() == null) {
+        if (expense.getSecondaryCategory().getName() == null) {
             expense.setSecondaryCategory((SecondaryCategory) null);
         } else {
             //TODO add secondaryCategory
