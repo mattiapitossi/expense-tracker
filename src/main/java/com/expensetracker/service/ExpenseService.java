@@ -65,7 +65,7 @@ public class ExpenseService {
         Wallet wallet = walletRepository.findByName(expense.getWallet().getName());
         expense.setWallet(wallet);
 
-        Expense expense1 = expenseRepository.save(expense);
+        expenseRepository.save(expense);
 
         //TODO add files to wallet transaction
         WalletTransaction walletTransaction = new WalletTransaction();
@@ -74,7 +74,7 @@ public class ExpenseService {
 
         walletTransactionService.createWalletTransaction(walletTransaction);
 
-        return expense1;
+        return expense;
     }
 
     public Expense modifyExpense(Expense expense) {
