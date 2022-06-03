@@ -37,4 +37,18 @@ public class ExpenseController {
         return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
     }
 
+    @PostMapping("/expenses/{id}")
+    ResponseEntity<Expense> duplicateExpense(@PathVariable(name = "id") Integer expenseId) throws URISyntaxException {
+        System.out.println(expenseId);
+        Expense result = expenseService.duplicateExpense(expenseId);
+        return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
+    }
+
+    @PutMapping("/expenses")
+    ResponseEntity<Expense> modifyExpense(@Valid @RequestBody Expense expense) throws URISyntaxException {
+        System.out.println(expense);
+        Expense result = expenseService.modifyExpense(expense);
+        return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
+    }
+
 }

@@ -6,6 +6,7 @@ import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.ExpenseRepository;
 import com.expensetracker.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,14 @@ public class ExpenseService {
         return expenseRepository.existsByCategory_Id(categoryId);
     }
 
+    public Expense duplicateExpense(Integer expenseId) {
+        Expense oldExpense = expenseRepository.findById(expenseId).get();
+        Expense newExpense = new Expense();
+        BeanUtils.copyProperties(oldExpense, newExpense);
+        newExpense.setId(null);
+        return expenseRepository.save(newExpense);
+    }
+
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
@@ -33,5 +42,11 @@ public class ExpenseService {
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         expense.setCategory(category);
         return expenseRepository.save(expense);
+    }
+
+    public Expense modifyExpense(Expense expense) {
+        Expense oldExpense = expenseRepository.findById(expense.getId()).get();
+        BeanUtils.copyProperties(expense, oldExpense);
+        return expenseRepository.save(oldExpense);
     }
 }
