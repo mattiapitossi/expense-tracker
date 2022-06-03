@@ -46,6 +46,8 @@ public class ExpenseService {
 
     public Expense modifyExpense(Expense expense) {
         Expense oldExpense = expenseRepository.findById(expense.getId()).get();
+        Category category = categoryRepository.findByName(expense.getCategory().getName());
+        expense.setCategory(category);
         BeanUtils.copyProperties(expense, oldExpense);
         return expenseRepository.save(oldExpense);
     }

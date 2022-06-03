@@ -20,7 +20,7 @@
 
          <Loading v-if="isLoadingForm" />
 
-         <form v-else @submit.prevent="addExpense()">
+         <form v-else @submit.prevent="modify ? modifyExpense() : addExpense()">
             <div class="mb-3">
                <label for="title" class="form-label">Title</label>
                <input type="text" class="form-control" id="title" name="title" v-model="data.title" placeholder="Title">
@@ -137,6 +137,7 @@ export default {
 
    data() {
       return {
+         modify: false,
          isLoading: false,
          isLoadingForm: false,
          showModal: false,
@@ -228,7 +229,9 @@ export default {
 
          this.axios.put("api/expenses", this.data)
             .then(response => {
-               //TODO code...
+               this.getExpenses();
+               this.isLoadingForm = false;
+               this.animateModal(false);
             })
             .catch(error => {
                console.log(error);
@@ -251,6 +254,9 @@ export default {
          
          this.getCategoriesForModify(expense.category.id);
 
+         //modify mode ON
+         this.modify = true;
+
          this.data.id = expense.id;
          this.data.title = expense.title;
          this.data.description = expense.description;
@@ -271,6 +277,9 @@ export default {
       },
 
       resetData() {
+         //modify mode OFF
+         this.modify = false;
+
          this.data.id = null
          this.data.title = null;
          this.data.description = null;

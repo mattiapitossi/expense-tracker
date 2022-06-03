@@ -4,59 +4,57 @@
             <h1>CATEGORIES</h1>
             <button class="btn btn-success" @click="animateModal(true)">ADD CATEGORY</button>
         </div>
+
+        <!-- //MODAL// -->
+        <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
+
+        <!-- //TODO CLOSE BUTTON -->
+        <div v-show="showModal" class="pop_up_form">
+
+            <Loading v-if="isLoadingForm" />
+
+            <form v-else @submit.prevent="addCategory()">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" v-model="data.name" placeholder="Name">
+                </div>
+                <div class="py-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary d-block">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- //TABLE -->
+        <div class="d-flex justify-content-center">
+
+            <Loading v-if="isLoading" />
+
+            <table v-else class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="category in categories" :key="category.id">
+                        <th scope="row">{{ category.id }}</th>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <button @click="animateModal(true), fillFormFields(category)" class="btn btn-primary mx-2">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button @click="deleteCategory(category.id)" class="btn btn-danger mx-2">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
     </main>
-
-    <!-- //MODAL// -->
-    <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
-
-    <!-- //TODO CLOSE BUTTON -->
-    <div v-show="showModal" class="pop_up_form">
-
-        <Loading v-if="isLoadingForm" />
-
-        <form v-else @submit.prevent="addCategory()">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" v-model="data.name" placeholder="Name">
-            </div>
-            <div class="py-3 d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary d-block">Submit</button>
-            </div>
-        </form>
-    </div>
-
-    <!-- //TABLE -->
-    <div class="d-flex justify-content-center">
-
-        <Loading v-if="isLoading" />
-
-        <table v-else class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="category in categories" :key="category.id">
-                    <th scope="row">{{ category.id }}</th>
-                    <td>{{ category.name }}</td>
-                    <td>
-                        <button @click="animateModal(true), fillFormFields(category)" class="btn btn-primary mx-2">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button class="btn btn-success mx-2">
-                            <i class="fa-regular fa-clone"></i>
-                        </button>
-                        <button @click="deleteCategory(category.id)" class="btn btn-danger mx-2">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-    </div>
 </template>
 
 <script>
