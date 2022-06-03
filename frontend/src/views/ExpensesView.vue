@@ -191,7 +191,6 @@ export default {
             .then(response => {
                this.categories = response.data
                this.setCategory(expenseCategoryId)
-               console.log("finish loading");
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -204,8 +203,7 @@ export default {
          this.axios.get("api/wallets")
             .then(response => {
                this.wallets = response.data
-               this.setWallet(expenseWalletId)
-               console.log("finish loading");
+               this.setWallet(expenseWalletId);
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -300,7 +298,6 @@ export default {
          this.categories.forEach(category => {
             if (category.id === expenseCategoryId) {
                this.data.category = category.name;
-               console.log(this.data.category);
             }
          });
       },
@@ -309,7 +306,6 @@ export default {
          this.wallets.forEach(wallet => {
             if (wallet.id === expenseWalletId) {
                this.data.wallet = wallet.name;
-               console.log(this.data.wallet);
             }
          });
       },
@@ -391,7 +387,6 @@ export default {
 
    mounted() {
       this.getExpenses();
-      console.log();
    },
 }
 </script>
