@@ -49,8 +49,7 @@
             </div>
             <div class="mb-3">
                <label for="expense_date" class="form-label">Date</label>
-               <input type="date" class="form-control" id="expense_date" name="expense_date" v-model="data.expense_date"
-                  placeholder="9999-31-12">
+               <input type="date" class="form-control" id="expense_date" name="expense_date" v-model="data.expense_date">
             </div>
             <div class="mb-3">
                <label for="description" class="form-label">Description</label>
@@ -142,7 +141,7 @@ export default {
             id: null,
             description: null,
             location: null,
-            expense_date: null,
+            expense_date: this.getTodayDate(),
             value: null,
             category: null,
             secondaryCategory: null,
@@ -158,8 +157,10 @@ export default {
          this.isLoadingForm = true
          this.axios.get("api/category")
             .then(response => {
-               this.categories = response.data
-               this.data.category = this.categories[0].name;
+               if (response.data.length != 0) {
+                  this.categories = response.data
+                  this.data.category = this.categories[0].name;
+               }
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -171,8 +172,12 @@ export default {
          this.isLoadingForm = true
          this.axios.get("api/wallets")
             .then(response => {
-               this.wallets = response.data
-               this.data.wallet = this.wallets[0].name;
+
+               //check if no wallets are present
+               if (response.data.length != 0) {
+                  this.wallets = response.data;
+                  this.data.wallet = this.wallets[0].name;
+               }
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -271,6 +276,10 @@ export default {
 
       //UTILS
 
+      getTodayDate() {
+         return dayjs(Date.now()).format("YYYY-MM-DD");
+      },
+
       fillFormFields(expense) {
 
          this.getCategoriesForModify(expense.category.id);
@@ -313,7 +322,7 @@ export default {
          this.data.title = null;
          this.data.description = null;
          this.data.location = null;
-         this.data.expense_date = null;
+         this.data.expense_date = this.getTodayDate();
          this.data.value = null;
          this.data.category = null;
          this.data.typeOfTransaction = "OUT";
@@ -382,6 +391,7 @@ export default {
 
    mounted() {
       this.getExpenses();
+      console.log();
    },
 }
 </script>
