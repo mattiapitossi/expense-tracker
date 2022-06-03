@@ -8,13 +8,12 @@
 
 .wrapper {
    width: 100%;
-   min-height: 100vh;
+   min-height: calc(100vh - 64px);
 }
 
 body {
    color: $gray;
    font-family: $font_stack;
-   min-height: 100vh;
    // font-family: $font_stack2;
    // background-image: linear-gradient(#072142, #020B16);
 }
@@ -28,6 +27,7 @@ a:hover {
 
 main {
    margin-top: 64px;
+   min-height: calc(100vh - 64px);
 }
 
 .back_overlay {
