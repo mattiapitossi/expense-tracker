@@ -10,5 +10,8 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
 
     WalletTransaction findByWallet(Wallet wallet);
 
+    WalletTransaction findByExpenseId(Integer expenseId);
+
     void deleteByWallet(Wallet wallet);
+
 }
