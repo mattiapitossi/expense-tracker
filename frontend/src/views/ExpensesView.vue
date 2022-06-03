@@ -3,16 +3,11 @@
 
       <div class="d-flex justify-content-between py-5">
          <h1>EXPENSES</h1>
-         <button class="btn btn-success"
-            @click="animateModal(true), getCategories(0)"
-         >ADD EXPENSE</button>
+         <button class="btn btn-success" @click="animateModal(true), getCategories(), getWallets()">ADD EXPENSE</button>
       </div>
 
       <!-- //MODAL// -->
-      <div class="back_overlay"
-         @click="animateModal(false)"
-         v-show="showModal"
-      ></div> <!-- //OVERLAY -->
+      <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
 
 
       <!-- //TODO CLOSE BUTTON -->
@@ -21,33 +16,22 @@
          <Loading v-if="isLoadingForm" />
 
          <form v-else @submit.prevent="modify ? modifyExpense() : addExpense()">
-            <div class="mb-3">
-               <label for="title" class="form-label">Title</label>
-               <input type="text" class="form-control" id="title" name="title" v-model="data.title" placeholder="Title">
-            </div>
-            <div class="mb-3">
-               <label for="description" class="form-label">Description</label>
-               <textarea class="form-control" id="description" name="description" v-model="data.description" placeholder="Description..."></textarea>
-            </div>
-            <div class="mb-3">
-               <label for="location" class="form-label">Location</label>
-               <input type="text" class="form-control" id="location" name="location" v-model="data.location" placeholder="Location">
-            </div>
-            <div class="mb-3">
-               <label for="expense_date" class="form-label">Date</label>
-               <input type="date" class="form-control" id="expense_date" name="expense_date" v-model="data.expense_date">
-            </div>
-            <div class="mb-3">
-               <label for="value" class="form-label">Value</label>
-               <input type="number" class="form-control" id="value" name="value" v-model="data.value">
-            </div>
             <div class="mb-3 me-3 d-inline-block">
                <label for="category" class="form-label d-block">Category</label>
                <select name="category" id="category" v-model="data.category">
-                  <option v-for="item in categories"
-                     :key="item.id"
-                     :value="item.name"
-                  >{{item.name}}</option>
+                  <option v-for="item in categories" :key="item.id" :value="item.name">{{ item.name }}</option>
+               </select>
+            </div>
+            <div class="mb-3 me-3 d-inline-block">
+               <label for="secondaryCategory" class="form-label d-block">Secondary Category</label>
+               <select name="secondaryCategory" id="secondaryCategory" v-model="data.category">
+                  <option v-for="item in secondaryCategories" :key="item.id" :value="item.name">{{ item.name }}</option>
+               </select>
+            </div>
+            <div class="mb-3 me-3 d-inline-block">
+               <label for="wallet" class="form-label d-block">Wallet</label>
+               <select name="wallet" id="wallet" v-model="data.wallet">
+                  <option v-for="item in wallets" :key="item.id" :value="item.name">{{ item.name }}</option>
                </select>
             </div>
             <div class="mb-3 me-3 d-inline-block">
@@ -59,55 +43,62 @@
                   <option value="OUTIN">OUTIN</option>
                </select>
             </div>
-            <div class="mb-3 me-3 form-check d-inline-block">
-               <label for="type_of_payment" class="form-label d-block">Payment type</label>
-               <select name="type_of_payment" id="type_of_payment" v-model="data.typeOfPayment">
-                  <option value="CASH">CASH</option>
-                  <option value="CARD">CARD</option>
-               </select>
+            <div class="mb-3">
+               <label for="value" class="form-label">Value</label>
+               <input type="number" class="form-control" id="value" name="value" v-model="data.value">
+            </div>
+            <div class="mb-3">
+               <label for="expense_date" class="form-label">Date</label>
+               <input type="date" class="form-control" id="expense_date" name="expense_date" v-model="data.expense_date"
+                  placeholder="9999-31-12">
+            </div>
+            <div class="mb-3">
+               <label for="description" class="form-label">Description</label>
+               <textarea class="form-control" id="description" name="description" v-model="data.description"
+                  placeholder="Description..."></textarea>
+            </div>
+            <div class="mb-3">
+               <label for="location" class="form-label">Location</label>
+               <input type="text" class="form-control" id="location" name="location" v-model="data.location"
+                  placeholder="Location">
             </div>
             <div class="py-3 d-flex justify-content-center">
                <button type="submit" class="btn btn-primary d-block">Submit</button>
             </div>
          </form>
       </div>
-      
+
 
       <!-- //TABLE -->
       <div class="d-flex justify-content-center">
 
          <Loading v-if="isLoading" />
-   
+
          <table v-else class="table">
             <thead>
                <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Description</th>
                   <th scope="col">Category</th>
+                  <th scope="col">Description</th>
                   <th scope="col">Value</th>
                   <th scope="col">Date</th>
                   <th scope="col">Trasaction type</th>
-                  <th scope="col">Payment type</th>
                   <th scope="col">Location</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col">Wallet</th>
                </tr>
             </thead>
             <tbody>
-               <tr v-for="expense in expenses"
-                  :key="expense.id"
-               >
-                  <th scope="row">{{expense.id}}</th>
-                  <td>{{expense.title}}</td>
-                  <td>{{expense.description}}</td>
-                  <td>{{expense.category.name}}</td>
-                  <td>{{expense.value}}</td>
-                  <td>{{expense.expense_date}}</td>
-                  <td>{{expense.typeOfPayment}}</td>
-                  <td>{{expense.typeOfTransaction}}</td>
-                  <td>{{expense.location}}</td>
+               <tr v-for="expense in expenses" :key="expense.id">
+                  <th scope="row">{{ expense.id }}</th>
+                  <td>{{ expense.category.name }}</td>
+                  <td>{{ expense.description }}</td>
+                  <td>{{ expense.value }} €</td>
+                  <td>{{ expense.expense_date }}</td>
+                  <td>{{ expense.typeOfTransaction }}</td>
+                  <td>{{ expense.location }}</td>
+                  <td>{{ expense.wallet.name }}</td>
                   <td>
-                     <button @click=" animateModal(true), fillFormFields(expense)" class="btn btn-primary mx-2">
+                     <button @click="animateModal(true), fillFormFields(expense)" class="btn btn-primary mx-2">
                         <i class="fa-solid fa-pen"></i>
                      </button>
                      <button @click="!isLoading ? duplicateExpense(expense.id) : null" class="btn btn-success mx-2">
@@ -122,7 +113,7 @@
          </table>
 
       </div>
-      
+
    </main>
 </template>
 
@@ -143,17 +134,20 @@ export default {
          showModal: false,
          expenses: null,
          categories: null,
+         wallets: null,
+         //TODO add secondaryCategories
+         secondaryCategories: null,
          //form field ->
          data: {
             id: null,
-            title: null,
             description: null,
             location: null,
             expense_date: null,
             value: null,
             category: null,
-            typeOfTransaction: "OUT",
-            typeOfPayment: "CASH",
+            secondaryCategory: null,
+            wallet: null,
+            typeOfTransaction: "OUT"
          },
       }
    },
@@ -173,12 +167,39 @@ export default {
             })
       },
 
+      getWallets() {
+         this.isLoadingForm = true
+         this.axios.get("api/wallets")
+            .then(response => {
+               this.wallets = response.data
+               this.data.wallet = this.wallets[0].name;
+               this.isLoadingForm = false
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
       getCategoriesForModify(expenseCategoryId) {
          this.isLoadingForm = true
          this.axios.get("api/category")
             .then(response => {
                this.categories = response.data
                this.setCategory(expenseCategoryId)
+               console.log("finish loading");
+               this.isLoadingForm = false
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
+      getWalletsForModify(expenseWalletId) {
+         this.isLoadingForm = true
+         this.axios.get("api/wallets")
+            .then(response => {
+               this.wallets = response.data
+               this.setWallet(expenseWalletId)
                console.log("finish loading");
                this.isLoadingForm = false
             })
@@ -213,15 +234,15 @@ export default {
             .catch(error => {
                console.log(error);
             })
-      },       
+      },
 
       getExpenses() {
          this.isLoading = true;
          this.axios.get("api/expenses")
             .then(response => {
                this.expenses = response.data;
-            this.isLoading = false;
-         });
+               this.isLoading = false;
+            });
       },
 
       modifyExpense() {
@@ -251,20 +272,19 @@ export default {
       //UTILS
 
       fillFormFields(expense) {
-         
+
          this.getCategoriesForModify(expense.category.id);
+         this.getWalletsForModify(expense.wallet.id);
 
          //modify mode ON
          this.modify = true;
 
          this.data.id = expense.id;
-         this.data.title = expense.title;
          this.data.description = expense.description;
          this.data.location = expense.location;
          this.data.expense_date = expense.expense_date;
          this.data.value = expense.value;
          this.data.typeOfTransaction = expense.typeOfTransaction;
-         this.data.typeOfPayment = expense.typeOfPayment;
       },
 
       setCategory(expenseCategoryId) {
@@ -272,6 +292,15 @@ export default {
             if (category.id === expenseCategoryId) {
                this.data.category = category.name;
                console.log(this.data.category);
+            }
+         });
+      },
+
+      setWallet(expenseWalletId) {
+         this.wallets.forEach(wallet => {
+            if (wallet.id === expenseWalletId) {
+               this.data.wallet = wallet.name;
+               console.log(this.data.wallet);
             }
          });
       },
@@ -295,16 +324,16 @@ export default {
 
          ///check if form is sending new expense
          if (!this.isLoadingForm) {
-            
+
             /////////// true -> open modal
             /////////// false -> close modal
             if (action) {
                this.resetData();
                this.showModal = action;
                gsap.fromTo(".pop_up_form", {
-                     opacity: 0,
-                     top: "-100%",
-                  },
+                  opacity: 0,
+                  top: "-100%",
+               },
                   {
                      opacity: 1,
                      top: "50%",
@@ -312,9 +341,9 @@ export default {
                   }
                );
                gsap.fromTo(".back_overlay", {
-                     filter: "blur(0px)",
-                     backgroundColor: "rgba(0,0,0,0.0)",
-                  },
+                  filter: "blur(0px)",
+                  backgroundColor: "rgba(0,0,0,0.0)",
+               },
                   {
                      filter: "blur(1px)",
                      backgroundColor: "rgba(0,0,0,0.4)",
@@ -324,9 +353,9 @@ export default {
             } else {
                this.resetData();
                gsap.fromTo(".pop_up_form", {
-                     opacity: 1,
-                     top: "50%",
-                  },
+                  opacity: 1,
+                  top: "50%",
+               },
                   {
                      opacity: 0,
                      top: "-100%",
@@ -334,9 +363,9 @@ export default {
                   }
                );
                gsap.fromTo(".back_overlay", {
-                     filter: "blur(1px)",
-                     backgroundColor: "rgba(0,0,0,0.4)",
-                  },
+                  filter: "blur(1px)",
+                  backgroundColor: "rgba(0,0,0,0.4)",
+               },
                   {
                      filter: "blur(0px)",
                      backgroundColor: "rgba(0,0,0,0.0)",
@@ -348,7 +377,7 @@ export default {
             }
          }
       },
-      
+
    },
 
    mounted() {

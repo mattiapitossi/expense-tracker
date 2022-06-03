@@ -19,7 +19,7 @@ public class ExpensePeriod {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
 
     @Column(name = "start_date")

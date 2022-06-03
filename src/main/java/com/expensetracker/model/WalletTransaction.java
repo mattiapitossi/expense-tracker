@@ -11,17 +11,22 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Data
-@Table(name = "cards_transactions")
-public class CardsTransaction implements Serializable {
-
-    private static final long serialVersionUID = 42320230496L;
+@Table(name = "wallet_transactions")
+public class WalletTransaction {
 
     @Id
-    @JoinColumn(name = "card_id")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @JoinColumn(name = "wallet_id")
     @ManyToOne
-    public Card card;
+    public Wallet wallet;
 
-    @Id
+    @JoinColumn(name = "file_id")
+    @ManyToOne
+    public File file;
+
     @JoinColumn(name = "expense_id")
     @OneToOne
     public Expense expense;
