@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between py-5">
          <h1>EXPENSES</h1>
          <button class="btn btn-success"
-            @click="animateModal(true), getCategories()"
+            @click="animateModal(true), getCategories(0)"
          >ADD EXPENSE</button>
       </div>
 
@@ -107,10 +107,10 @@
                   <td>{{expense.typeOfTransaction}}</td>
                   <td>{{expense.location}}</td>
                   <td>
-                     <button class="btn btn-primary mx-2">
+                     <button @click=" animateModal(true), fillFormFields(expense)" class="btn btn-primary mx-2">
                         <i class="fa-solid fa-pen"></i>
                      </button>
-                     <button class="btn btn-success mx-2">
+                     <button @click="!isLoading ? duplicateExpense(expense.id) : null" class="btn btn-success mx-2">
                         <i class="fa-regular fa-clone"></i>
                      </button>
                      <button @click="deleteExpense(expense.id)" class="btn btn-danger mx-2">
@@ -141,8 +141,10 @@ export default {
          isLoadingForm: false,
          showModal: false,
          expenses: null,
+         categories: null,
          //form field ->
          data: {
+            id: null,
             title: null,
             description: null,
             location: null,
@@ -152,7 +154,6 @@ export default {
             typeOfTransaction: "OUT",
             typeOfPayment: "CASH",
          },
-         categories: null
       }
    },
 
@@ -171,18 +172,114 @@ export default {
             })
       },
 
+      getCategoriesForModify(expenseCategoryId) {
+         this.isLoadingForm = true
+         this.axios.get("api/category")
+            .then(response => {
+               this.categories = response.data
+               this.setCategory(expenseCategoryId)
+               console.log("finish loading");
+               this.isLoadingForm = false
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
       addExpense() {
          this.isLoadingForm = true;
 
          this.axios.post("api/expenses", this.data)
-         .then(response => {
-            this.getExpenses()
-            this.isLoadingForm = false
-            this.animateModal(false);
-         })
-         .catch(error => {
-            console.log(error);
-         })
+            .then(response => {
+               this.getExpenses()
+               this.isLoadingForm = false
+               this.animateModal(false);
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
+      //TODO
+      duplicateExpense(expenseId) {
+         this.isLoading = true;
+
+         this.axios.post("api/expenses/" + expenseId)
+            .then(response => {
+               this.getExpenses();
+               this.isLoading = false;
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },       
+
+      getExpenses() {
+         this.isLoading = true;
+         this.axios.get("api/expenses")
+            .then(response => {
+               this.expenses = response.data;
+            this.isLoading = false;
+         });
+      },
+
+      modifyExpense() {
+         this.isLoadingForm = true;
+
+         this.axios.put("api/expenses", this.data)
+            .then(response => {
+               //code...
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
+      deleteExpense(expenseId) {
+         this.axios.delete("api/expenses/" + expenseId)
+            .then(response => {
+               this.getExpenses();
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
+      //UTILS
+
+      fillFormFields(expense) {
+         
+         this.getCategoriesForModify(expense.category.id);
+
+         this.data.id = expense.id;
+         this.data.title = expense.title;
+         this.data.description = expense.description;
+         this.data.location = expense.location;
+         this.data.expense_date = expense.expense_date;
+         this.data.value = expense.value;
+         this.data.typeOfTransaction = expense.typeOfTransaction;
+         this.data.typeOfPayment = expense.typeOfPayment;
+      },
+
+      setCategory(expenseCategoryId) {
+         this.categories.forEach(category => {
+            if (category.id === expenseCategoryId) {
+               this.data.category = category.name;
+               console.log(this.data.category);
+            }
+         });
+      },
+
+      resetData() {
+         this.data.id = null
+         this.data.title = null;
+         this.data.description = null;
+         this.data.location = null;
+         this.data.expense_date = null;
+         this.data.value = null;
+         this.data.category = null;
+         this.data.typeOfTransaction = "OUT";
+         this.data.typeOfPayment = "CASH";
       },
 
       animateModal(action) {
@@ -193,6 +290,7 @@ export default {
             /////////// true -> open modal
             /////////// false -> close modal
             if (action) {
+               this.resetData();
                this.showModal = action;
                gsap.fromTo(".pop_up_form", {
                      opacity: 0,
@@ -215,6 +313,7 @@ export default {
                   }
                );
             } else {
+               this.resetData();
                gsap.fromTo(".pop_up_form", {
                      opacity: 1,
                      top: "50%",
@@ -240,25 +339,7 @@ export default {
             }
          }
       },
-
-      getExpenses() {
-         this.isLoading = true;
-         this.axios.get("api/expenses")
-            .then(response => {
-            this.expenses = response.data;
-            this.isLoading = false;
-         });
-      },
-
-      deleteExpense(expenseId) {
-         this.axios.delete("api/expenses/" + expenseId)
-            .then(response => {
-               this.getExpenses();
-            })
-            .catch(error => {
-               console.log(error);
-            })
-      }
+      
    },
 
    mounted() {
