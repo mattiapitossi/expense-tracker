@@ -13,7 +13,7 @@
 
             <Loading v-if="isLoadingForm" />
 
-            <form v-else @submit.prevent="addCategory()">
+            <form v-else @submit.prevent="modify ? modifyCategory() : addCategory()">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" name="name" v-model="data.name" placeholder="Name">
@@ -68,6 +68,7 @@ export default {
 
     data() {
         return {
+            modify: false,
             isLoading: false,
             isLoadingForm: false,
             showModal: false,
@@ -104,6 +105,20 @@ export default {
                 })
         },
 
+        modifyCategory() {
+            this.isLoadingForm = true;
+
+            this.axios.put("api/category", this.data)
+                .then(response => {
+                    this.getCategories()
+                    this.isLoadingForm = false
+                    this.animateModal(false);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
         deleteCategory(categoryId) {
             this.axios.delete("api/category/" + categoryId)
                 .then(response => {
@@ -117,11 +132,17 @@ export default {
         //UTILS
 
         fillFormFields(category) {
+            //modify mode ON
+            this.modify = true
+
             this.data.id = category.id;
             this.data.name = category.name;
         },
 
         resetData() {
+            //modify mode OFF
+            this.modify = false
+
             this.data.id = null;
             this.data.name = null
         },
