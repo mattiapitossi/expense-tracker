@@ -6,7 +6,7 @@
       <RouterLink class="nav_item" :to="{name: 'expenses'}">
          Expenses
       </RouterLink>
-      <RouterLink class="nav_item" to="#">
+      <RouterLink class="nav_item" :to="{name: 'categories'}">
          Categories
       </RouterLink>
       <RouterLink class="nav_item" to="#">
