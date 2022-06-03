@@ -25,8 +25,12 @@ public class WalletTransactionService {
         return walletTransactionRepository.save(oldWalletTransaction);
     }
 
-    public void deleteWalletTransaction(Wallet wallet) {
+    public void deleteWalletTransactionByWallet(Wallet wallet) {
         walletTransactionRepository.deleteByWallet(wallet);
+    }
+
+    public void deleteWalletTransactionByExpenseId(Integer expenseId) {
+        walletTransactionRepository.deleteByExpenseId(expenseId);
     }
 
     public WalletTransaction findByWallet(Wallet wallet) {
