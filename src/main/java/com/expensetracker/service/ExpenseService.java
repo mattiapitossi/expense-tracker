@@ -34,29 +34,29 @@ public class ExpenseService {
         Expense oldExpense = expenseRepository.findById(expenseId).get();
         Expense newExpense = new Expense();
         BeanUtils.copyProperties(oldExpense, newExpense);
-
-        WalletTransaction walletTransaction = walletTransactionService.findByWallet(newExpense.getWallet());
-        walletTransaction.setExpense(newExpense);
-        walletTransactionService.createWalletTransaction(walletTransaction);
+//
+//        WalletTransaction walletTransaction = walletTransactionService.findByExpenseId(expenseId);
+//        walletTransaction.setExpense(newExpense);
+//        walletTransactionService.createWalletTransaction(walletTransaction);
 
         newExpense.setId(null);
-        return expenseRepository.save(newExpense);
+        return createNewExpense(newExpense);
     }
 
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
 
-    public void deleteExpenseById(Integer id) {
-        walletTransactionService.deleteWalletTransaction(expenseRepository.getById(id).getWallet());
-        expenseRepository.deleteById(id);
+    public void deleteExpenseById(Integer expenseId) {
+        walletTransactionService.deleteWalletTransactionByExpenseId(expenseId);
+        expenseRepository.deleteById(expenseId);
     }
 
     public Expense createNewExpense(Expense expense) {
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         expense.setCategory(category);
 
-        if (expense.getSecondaryCategory().getName() == null) {
+        if (expense.getSecondaryCategory() == null) {
             expense.setSecondaryCategory((SecondaryCategory) null);
         } else {
             //TODO add secondaryCategory
