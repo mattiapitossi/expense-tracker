@@ -321,6 +321,7 @@ export default {
          this.data.expense_date = this.getTodayDate();
          this.data.value = null;
          this.data.category = null;
+         this.data.wallet = null;
          this.data.typeOfTransaction = "OUT";
          this.data.typeOfPayment = "CASH";
       },
