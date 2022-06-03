@@ -40,6 +40,7 @@ public class ExpenseService {
 //        walletTransactionService.createWalletTransaction(walletTransaction);
 
         newExpense.setId(null);
+        newExpense.setSecondaryCategory(new SecondaryCategory());
         return createNewExpense(newExpense);
     }
 
