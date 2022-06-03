@@ -57,8 +57,7 @@ public class ExpenseService {
         expense.setCategory(category);
 
         if (expense.getSecondaryCategory().getName() == null) {
-            SecondaryCategory secondaryCategory = null;
-            expense.setSecondaryCategory(secondaryCategory);
+            expense.setSecondaryCategory((SecondaryCategory) null);
         } else {
             //TODO add secondaryCategory
         }
@@ -82,24 +81,26 @@ public class ExpenseService {
         Expense oldExpense = expenseRepository.findById(expense.getId()).get();
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         Wallet wallet = walletRepository.findByName(expense.getWallet().getName());
-        WalletTransaction walletTransaction = walletTransactionService.findByWallet(expense.getWallet());
-
-
-
-        walletTransaction.setWallet(wallet);
+        WalletTransaction walletTransaction = walletTransactionService.findByExpenseId(oldExpense.getId());
 
         if (expense.getSecondaryCategory().getName() == null) {
-            SecondaryCategory secondaryCategory = null;
-            expense.setSecondaryCategory(secondaryCategory);
+            expense.setSecondaryCategory((SecondaryCategory) null);
         } else {
             //TODO add secondaryCategory
         }
 
+        //check if wallet in walletTransaction has been changed
+        if (walletTransaction.getWallet().getId() != wallet.getId()) {
+            walletTransaction.setWallet(wallet);
+            walletTransactionService.modifyWalletTransaction(walletTransaction);
+        }
+
         expense.setCategory(category);
         expense.setWallet(wallet);
+        System.out.println(expense.getCategory());
+        System.out.println(expense.getWallet());
         BeanUtils.copyProperties(expense, oldExpense);
 
-        walletTransactionService.modifyWalletTransaction(walletTransaction);
         return expenseRepository.save(oldExpense);
     }
 }

@@ -17,10 +17,12 @@ public class WalletTransactionService {
         walletTransactionRepository.save(walletTransaction);
     }
 
-    public void modifyWalletTransaction(WalletTransaction walletTransaction) {
+    public WalletTransaction modifyWalletTransaction(WalletTransaction walletTransaction) {
         WalletTransaction oldWalletTransaction = walletTransactionRepository.findById(walletTransaction.getId()).get();
 
         BeanUtils.copyProperties(walletTransaction, oldWalletTransaction);
+
+        return walletTransactionRepository.save(oldWalletTransaction);
     }
 
     public void deleteWalletTransaction(Wallet wallet) {
@@ -29,5 +31,9 @@ public class WalletTransactionService {
 
     public WalletTransaction findByWallet(Wallet wallet) {
         return walletTransactionRepository.findByWallet(wallet);
+    }
+
+    public WalletTransaction findByExpenseId(Integer expenseId) {
+        return walletTransactionRepository.findByExpenseId(expenseId);
     }
 }
