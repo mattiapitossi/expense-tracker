@@ -4,6 +4,7 @@
          <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th v-if="categories[0].hasOwnProperty('category')" scope="col">Category</th>
             <th scope="col">Actions</th>
          </tr>
       </thead>
@@ -11,6 +12,7 @@
          <tr v-for="category in categories" :key="category.id">
             <th scope="row">{{ category.id }}</th>
             <td>{{ category.name }}</td>
+            <td v-if="category.hasOwnProperty('category')">{{ category.category.name }}</td>
             <td>
                   <button @click="$emit('edit', true), $emit('fill', category)" class="btn btn-primary mx-2">
                      <i class="fa-solid fa-pen"></i>
