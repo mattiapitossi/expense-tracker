@@ -1,9 +1,5 @@
 <template>
     <main class="container">
-        <div class="d-flex justify-content-between py-5">
-            <h1>CATEGORIES</h1>
-            <button class="btn btn-success" @click="animateModal(true)">ADD CATEGORY</button>
-        </div>
 
         <!-- //MODAL// -->
         <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
@@ -16,7 +12,7 @@
             <form v-else @submit.prevent="modify ? modifyCategory() : addCategory()">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" v-model="data.name" placeholder="Name">
+                    <input type="text" class="form-control" id="name" name="name" v-model="dataCategory.name" placeholder="Name">
                 </div>
                 <div class="py-3 d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary d-block">Submit</button>
@@ -27,31 +23,37 @@
         <!-- //TABLE -->
         <div class="d-flex justify-content-center">
 
-            <Loading v-if="isLoading" />
+            <div class="categories">
+                <div class="d-flex justify-content-between py-5">
+                    <h1>CATEGORIES</h1>
+                    <button class="btn btn-success" @click="animateModal(true)">ADD CATEGORY</button>
+                </div>
 
-            <table v-else class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="category in categories" :key="category.id">
-                        <th scope="row">{{ category.id }}</th>
-                        <td>{{ category.name }}</td>
-                        <td>
-                            <button @click="animateModal(true), fillFormFields(category)" class="btn btn-primary mx-2">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button @click="deleteCategory(category.id)" class="btn btn-danger mx-2">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <Loading v-if="isLoadingCategory" />
+    
+                <Table v-else
+                    :categories="categories"
+                    @edit="animateModal"
+                    @fill="fillFormFields"
+                    @delete="deleteCategory"
+                />
+            </div>
+
+            <div class="categories">
+                <div class="d-flex justify-content-between py-5">
+                    <h1>SUBCATEGORIES</h1>
+                    <button class="btn btn-success" @click="animateModal(true)">ADD SUBCATEGORY</button>
+                </div>
+
+                <Loading v-if="isLoadingSubcategory" />
+    
+                <Table v-else
+                    :categories="subcategories"
+                    @edit="animateModal"
+                    @fill="fillFormFields"
+                    @delete="deleteSubcategory"
+                />
+            </div>
 
         </div>
     </main>
@@ -59,22 +61,29 @@
 
 <script>
 import Loading from "@/components/partials/Loading.vue";
+import Table from "@/components/partials/Table.vue"
 import gsap from "gsap";
 
 export default {
 
     name: "CategoriesView",
-    components: { Loading },
+    components: { Loading, Table },
 
     data() {
         return {
             modify: false,
-            isLoading: false,
+            isLoadingCategory: false,
+            isLoadingSubcategory: false,
             isLoadingForm: false,
             showModal: false,
             categories: null,
+            subcategories: null,
             //form field ->
-            data: {
+            dataCategory: {
+                id: null,
+                name: null
+            },
+            dataSubcategory: {
                 id: null,
                 name: null
             },
@@ -83,18 +92,27 @@ export default {
 
     methods: {
         getCategories() {
-            this.isLoading = true;
+            this.isLoadingCategory = true;
             this.axios.get("api/category")
                 .then(response => {
                     this.categories = response.data;
-                    this.isLoading = false;
+                    this.isLoadingCategory = false;
+                });
+        },
+
+        getSubcategies() {
+            this.isLoadingSubcategory = true;
+            this.axios.get("api/category")
+                .then(response => {
+                    this.subcategories = response.data;
+                    this.isLoadingSubcategory = false;
                 });
         },
 
         addCategory() {
             this.isLoadingForm = true;
 
-            this.axios.post("api/category", this.data)
+            this.axios.post("api/category", this.dataCategory)
                 .then(response => {
                     this.getCategories()
                     this.isLoadingForm = false
@@ -108,7 +126,7 @@ export default {
         modifyCategory() {
             this.isLoadingForm = true;
 
-            this.axios.put("api/category", this.data)
+            this.axios.put("api/category", this.dataCategory)
                 .then(response => {
                     this.getCategories()
                     this.isLoadingForm = false
@@ -135,16 +153,16 @@ export default {
             //modify mode ON
             this.modify = true
 
-            this.data.id = category.id;
-            this.data.name = category.name;
+            this.dataCategory.id = category.id;
+            this.dataCategory.name = category.name;
         },
 
         resetData() {
             //modify mode OFF
             this.modify = false
 
-            this.data.id = null;
-            this.data.name = null
+            this.dataCategory.id = null;
+            this.dataCategory.name = null
         },
 
         animateModal(action) {
