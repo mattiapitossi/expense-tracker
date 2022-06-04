@@ -95,7 +95,7 @@
                         @setCategoryType="setCategoryType"
                         @edit="animateModal"
                         @fill="fillFormFields"
-                        @delete="deleteCategory"
+                        @delete="deleteSubcategory"
                     />
                 </div>
             </div>
@@ -206,10 +206,34 @@ export default {
                 })
         },
 
+        modifySubcategory() {
+            this.isLoadingForm = true;
+
+            this.axios.put("api/subcategory", this.dataSubcategory)
+                .then(response => {
+                    this.getSubcategories()
+                    this.isLoadingForm = false
+                    this.animateModal(false);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
         deleteCategory(categoryId) {
             this.axios.delete("api/category/" + categoryId)
                 .then(response => {
                     this.getCategories()
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+        deleteSubcategory(subcategoryId) {
+            this.axios.delete("api/subcategory/" + subcategoryId)
+                .then(response => {
+                    this.getSubcategories()
                 })
                 .catch(error => {
                     console.log(error);
@@ -255,7 +279,9 @@ export default {
 
             this.dataSubcategory.id = null;
             this.dataSubcategory.name = null;
-            this.dataSubcategory.category = null;
+            if (this.categories) {
+                this.dataSubcategory.category = this.categories[0].name;
+            }
         },
 
         animateModal(action) {
