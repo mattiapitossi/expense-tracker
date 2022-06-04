@@ -4,36 +4,73 @@
         <!-- //MODAL// -->
         <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
 
-        <!-- //TODO CLOSE BUTTON -->
         <div v-show="showModal" class="pop_up_form">
+            <!-- //TODO CLOSE BUTTON -->
 
             <Loading v-if="isLoadingForm" />
 
-            <form v-else @submit.prevent="modify ? modifyCategory() : addCategory()">
-                <div class="mb-3">
+            <form v-else @submit.prevent="
+                subcategoryOperation ? (modify ? modifySubcategory() : addSubcategory()) : (modify ? modifyCategory() : addCategory())
+            ">
+                <div v-if="subcategoryOperation" class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" v-model="dataSubcategory.name" placeholder="Name">
+                </div>
+                <div v-else class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" name="name" v-model="dataCategory.name" placeholder="Name">
+                </div>
+                <div v-if="subcategoryOperation" class="mb-3 me-3 d-inline-block">
+                    <label for="category" class="form-label d-block">Category</label>
+                    <select name="category" id="category" v-model="dataSubcategory.category">
+                    <option v-for="item in categories" :key="item.id" :value="item.name">{{ item.name }}</option>
+                    </select>
                 </div>
                 <div class="py-3 d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary d-block">Submit</button>
                 </div>
             </form>
+            
+            <!-- <div v-else class="form_category">
+                <FormCategory v-if="subcategoryOperation"
+                    :category="dataSubcategory"
+                    :categories="categories"
+                    :modify="modify"
+                    :subcategoryOperation="subcategoryOperation"
+                    @sendCategory="addSubcategory"
+                    @modifyCategory="modifySubcategory"
+                />
+                <FormCategory v-else
+                    :category="dataCategory"
+                    :modify="modify"
+                    :subcategoryOperation="subcategoryOperation"
+                    @sendCategory="addCategory"
+                    @modifyCategory="modifyCategory"
+                />
+            </div> -->
+            
         </div>
 
         <!-- //TABLE -->
         <div class="d-flex">
-
+            
+            <!-- // CATEGORIES -->
             <div class="categories">
                 <div class="d-flex justify-content-between py-5">
                     <h1>CATEGORIES</h1>
-                    <button class="btn btn-success" @click="animateModal(true)">ADD CATEGORY</button>
+                    <button class="btn btn-success" 
+                        @click="animateModal(true), subcategoryOperation = false"
+                    >ADD CATEGORY</button>
                 </div>
 
                 <div class="d-flex justify-content-center">
                     <Loading v-if="isLoadingCategory" />
+
+                    <h2 v-else-if="categories == null" class="text-center">No categories present. Add one!</h2>
         
                     <Table v-else
                         :categories="categories"
+                        @setCategoryType="setCategoryType"
                         @edit="animateModal"
                         @fill="fillFormFields"
                         @delete="deleteCategory"
@@ -41,17 +78,21 @@
                 </div>
             </div>
 
+            <!-- // SUBCATEGORIES -->
             <div class="categories">
                 <div class="d-flex justify-content-between py-5">
                     <h1>SUBCATEGORIES</h1>
-                    <button class="btn btn-success" @click="animateModal(true)">ADD SUBCATEGORY</button>
+                    <button class="btn btn-success" @click="animateModal(true), subcategoryOperation = true">ADD SUBCATEGORY</button>
                 </div>
 
                 <div class="d-flex justify-content-center">
                     <Loading v-if="isLoadingSubcategory" />
-        
+
+                    <h2 v-else-if="subcategories == null" class="text-center">No subcategories present. Add one!</h2>
+
                     <Table v-else
                         :categories="subcategories"
+                        @setCategoryType="setCategoryType"
                         @edit="animateModal"
                         @fill="fillFormFields"
                         @delete="deleteCategory"
@@ -64,14 +105,15 @@
 </template>
 
 <script>
-import Loading from "@/components/partials/Loading.vue";
-import Table from "@/components/partials/Table.vue"
+import Loading from "../components/partials/Loading.vue";
+import Table from "../components/partials/Table.vue"
+import FormCategory from "../components/partials/FormCategory.vue";
 import gsap from "gsap";
 
 export default {
 
     name: "CategoriesView",
-    components: { Loading, Table },
+    components: { Loading, Table, FormCategory },
 
     data() {
         return {
@@ -80,8 +122,10 @@ export default {
             isLoadingSubcategory: false,
             isLoadingForm: false,
             showModal: false,
+            subcategoryOperation: false,
             categories: null,
             subcategories: null,
+
             //form field ->
             dataCategory: {
                 id: null,
@@ -89,7 +133,8 @@ export default {
             },
             dataSubcategory: {
                 id: null,
-                name: null
+                name: null,
+                category: null,
             },
         }
     },
@@ -99,12 +144,18 @@ export default {
             this.isLoadingCategory = true;
             this.axios.get("api/category")
                 .then(response => {
-                    this.categories = response.data;
+                    if (response.data.length != 0) {
+                        this.categories = response.data;
+                        this.dataSubcategory.category = this.categories[0].name;
+                    }
                     this.isLoadingCategory = false;
-                });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         },
 
-        getSubcategies() {
+        getSubcategories() {
             this.isLoadingSubcategory = true;
             this.axios.get("api/subcategory")
                 .then(response => {
@@ -119,6 +170,20 @@ export default {
             this.axios.post("api/category", this.dataCategory)
                 .then(response => {
                     this.getCategories()
+                    this.isLoadingForm = false
+                    this.animateModal(false);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+        addSubcategory() {
+            this.isLoadingForm = true;
+
+            this.axios.post("api/subcategory", this.dataSubcategory)
+                .then(response => {
+                    this.getSubcategories()
                     this.isLoadingForm = false
                     this.animateModal(false);
                 })
@@ -153,24 +218,48 @@ export default {
 
         //UTILS
 
+        setCategory(categoryId) {
+            this.categories.forEach(category => {
+                if (category.id === categoryId) {
+                this.dataSubcategory = category.name;
+                }
+            });
+        },
+
+        setCategoryType(bool) {
+            this.subcategoryOperation = bool;
+        },
+
         fillFormFields(category) {
             //modify mode ON
             this.modify = true
+            console.log(category);
 
-            this.dataCategory.id = category.id;
-            this.dataCategory.name = category.name;
+
+            if (this.subcategoryOperation) {
+                this.dataSubcategory.id = category.id;
+                this.dataSubcategory.name = category.name;
+                this.dataSubcategory.category = category.category.name;
+            } else {
+                this.dataCategory.id = category.id;
+                this.dataCategory.name = category.name;
+            }
         },
 
         resetData() {
             //modify mode OFF
-            this.modify = false
+            this.modify = false;
 
             this.dataCategory.id = null;
-            this.dataCategory.name = null
+            this.dataCategory.name = null;
+
+            this.dataSubcategory.id = null;
+            this.dataSubcategory.name = null;
+            this.dataSubcategory.category = null;
         },
 
         animateModal(action) {
-
+            console.log(this.dataSubcategory);
             ///check if form is sending new expense
             if (!this.isLoadingForm) {
 
@@ -230,7 +319,7 @@ export default {
 
     mounted() {
         this.getCategories();
-        this.getSubcategies();
+        this.getSubcategories();
     }
 }
 </script>
