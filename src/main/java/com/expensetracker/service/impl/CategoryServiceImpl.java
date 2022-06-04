@@ -41,4 +41,8 @@ public class CategoryServiceImpl implements CategoryService {
             //TODO throw clientError
         }
     }
+
+    public Category findByName(String name) {
+        return categoryRepository.findByName(name);
+    }
 }
