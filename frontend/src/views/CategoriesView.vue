@@ -21,7 +21,7 @@
         </div>
 
         <!-- //TABLE -->
-        <div class="d-flex justify-content-center">
+        <div class="d-flex">
 
             <div class="categories">
                 <div class="d-flex justify-content-between py-5">
@@ -29,14 +29,16 @@
                     <button class="btn btn-success" @click="animateModal(true)">ADD CATEGORY</button>
                 </div>
 
-                <Loading v-if="isLoadingCategory" />
-    
-                <Table v-else
-                    :categories="categories"
-                    @edit="animateModal"
-                    @fill="fillFormFields"
-                    @delete="deleteCategory"
-                />
+                <div class="d-flex justify-content-center">
+                    <Loading v-if="isLoadingCategory" />
+        
+                    <Table v-else
+                        :categories="categories"
+                        @edit="animateModal"
+                        @fill="fillFormFields"
+                        @delete="deleteCategory"
+                    />
+                </div>
             </div>
 
             <div class="categories">
@@ -45,14 +47,16 @@
                     <button class="btn btn-success" @click="animateModal(true)">ADD SUBCATEGORY</button>
                 </div>
 
-                <Loading v-if="isLoadingSubcategory" />
-    
-                <Table v-else
-                    :categories="subcategories"
-                    @edit="animateModal"
-                    @fill="fillFormFields"
-                    @delete="deleteSubcategory"
-                />
+                <div class="d-flex justify-content-center">
+                    <Loading v-if="isLoadingSubcategory" />
+        
+                    <Table v-else
+                        :categories="subcategories"
+                        @edit="animateModal"
+                        @fill="fillFormFields"
+                        @delete="deleteCategory"
+                    />
+                </div>
             </div>
 
         </div>
@@ -102,7 +106,7 @@ export default {
 
         getSubcategies() {
             this.isLoadingSubcategory = true;
-            this.axios.get("api/category")
+            this.axios.get("api/subcategory")
                 .then(response => {
                     this.subcategories = response.data;
                     this.isLoadingSubcategory = false;
@@ -226,6 +230,7 @@ export default {
 
     mounted() {
         this.getCategories();
+        this.getSubcategies();
     }
 }
 </script>

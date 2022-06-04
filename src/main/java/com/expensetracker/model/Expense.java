@@ -43,8 +43,8 @@ public class Expense {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "secondary_category_id")
-    private SecondaryCategory secondaryCategory;
+    @JoinColumn(name = "subcategory_id")
+    private Subcategory subcategory;
 
     @ManyToOne
     @JoinColumn(name = "wallet_id")
@@ -59,13 +59,13 @@ public class Expense {
     public void setCategory(Category category) { this.category = category; }
 
     @JsonSetter
-    public void setSecondaryCategory(String secondaryCategory) {
-        this.secondaryCategory = new SecondaryCategory();
-        this.secondaryCategory.setName(secondaryCategory);
+    public void setSubcategory(String subcategory) {
+        this.subcategory = new Subcategory();
+        this.subcategory.setName(subcategory);
     }
 
-    public void setSecondaryCategory(SecondaryCategory secondaryCategory) {
-        this.secondaryCategory = secondaryCategory;
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
     }
 
     @JsonSetter

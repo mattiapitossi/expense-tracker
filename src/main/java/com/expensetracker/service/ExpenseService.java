@@ -40,7 +40,7 @@ public class ExpenseService {
 //        walletTransactionService.createWalletTransaction(walletTransaction);
 
         newExpense.setId(null);
-        newExpense.setSecondaryCategory(new SecondaryCategory());
+        newExpense.setSubcategory(new Subcategory());
         return createNewExpense(newExpense);
     }
 
@@ -57,8 +57,8 @@ public class ExpenseService {
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         expense.setCategory(category);
 
-        if (expense.getSecondaryCategory().getName() == null) {
-            expense.setSecondaryCategory((SecondaryCategory) null);
+        if (expense.getSubcategory().getName() == null) {
+            expense.setSubcategory((Subcategory) null);
         } else {
             //TODO add secondaryCategory
         }
@@ -84,8 +84,8 @@ public class ExpenseService {
         Wallet wallet = walletRepository.findByName(expense.getWallet().getName());
         WalletTransaction walletTransaction = walletTransactionService.findByExpenseId(oldExpense.getId());
 
-        if (expense.getSecondaryCategory().getName() == null) {
-            expense.setSecondaryCategory((SecondaryCategory) null);
+        if (expense.getSubcategory().getName() == null) {
+            expense.setSubcategory((Subcategory) null);
         } else {
             //TODO add secondaryCategory
         }

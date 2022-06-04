@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NoArgsConstructor
 @Data
-@Table(name = "secondary_categories")
-public class SecondaryCategory {
+@Table(name = "subcategories")
+public class Subcategory {
 
     @Id
     @Column(name = "id")
