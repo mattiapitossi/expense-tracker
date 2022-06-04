@@ -1,5 +1,6 @@
 package com.expensetracker.model;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,12 @@ public class Subcategory {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @JsonSetter
+    public void setCategory(String category) {
+        this.category = new Category();
+        this.category.setName(category);
+    }
+
+    public void setCategory(Category category) { this.category = category; }
 }

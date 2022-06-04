@@ -32,12 +32,12 @@ public class SubcategoryController {
 //                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 //    }
 
-//    @PostMapping("/subcategory")
-//    ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
-//        System.out.println(category);
-//        var res = categoryService.createNewCategory(category);
-//        return ResponseEntity.created(new URI("/api/category" + res.getId())).body(res);
-//    }
+    @PostMapping("/subcategory")
+    ResponseEntity<Subcategory> createSubcategory(@Valid @RequestBody Subcategory subcategory) throws URISyntaxException {
+        System.out.println(subcategory);
+        Subcategory res = subcategoryService.createNewSubcategory(subcategory);
+        return ResponseEntity.created(new URI("/api/subcategory" + res.getId())).body(res);
+    }
 
 //    @PutMapping("/subcategory")
 //    ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category) {
