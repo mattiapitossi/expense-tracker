@@ -84,6 +84,7 @@
                   <th scope="col">Trasaction type</th>
                   <th scope="col">Location</th>
                   <th scope="col">Wallet</th>
+                  <th scope="col">Actions</th>
                </tr>
             </thead>
             <tbody>
