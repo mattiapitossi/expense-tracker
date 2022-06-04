@@ -23,9 +23,9 @@
                </select>
             </div>
             <div class="mb-3 me-3 d-inline-block">
-               <label for="secondaryCategory" class="form-label d-block">Secondary Category</label>
-               <select name="secondaryCategory" id="secondaryCategory" v-model="data.category">
-                  <option v-for="item in secondaryCategories" :key="item.id" :value="item.name">{{ item.name }}</option>
+               <label for="subcategory" class="form-label d-block">Subcategory</label>
+               <select name="subcategory" id="subcategory" v-model="data.subcategory">
+                  <option v-for="item in subcategories" :key="item.id" :value="item.name">{{ item.name }}</option>
                </select>
             </div>
             <div class="mb-3 me-3 d-inline-block">
@@ -135,8 +135,7 @@ export default {
          expenses: null,
          categories: null,
          wallets: null,
-         //TODO add secondaryCategories
-         secondaryCategories: null,
+         subcategories: null,
          //form field ->
          data: {
             id: null,
@@ -145,7 +144,7 @@ export default {
             expense_date: this.getTodayDate(),
             value: null,
             category: null,
-            secondaryCategory: null,
+            subcategory: null,
             wallet: null,
             typeOfTransaction: "OUT"
          },
@@ -159,9 +158,22 @@ export default {
          this.axios.get("api/category")
             .then(response => {
                if (response.data.length != 0) {
-                  this.categories = response.data
+                  this.categories = response.data;
                   this.data.category = this.categories[0].name;
                }
+               this.isLoadingForm = false
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
+      getCategoriesForModify(expenseCategoryId) {
+         this.isLoadingForm = true
+         this.axios.get("api/category")
+            .then(response => {
+               this.categories = response.data
+               this.setCategory(expenseCategoryId)
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -179,19 +191,6 @@ export default {
                   this.wallets = response.data;
                   this.data.wallet = this.wallets[0].name;
                }
-               this.isLoadingForm = false
-            })
-            .catch(error => {
-               console.log(error);
-            })
-      },
-
-      getCategoriesForModify(expenseCategoryId) {
-         this.isLoadingForm = true
-         this.axios.get("api/category")
-            .then(response => {
-               this.categories = response.data
-               this.setCategory(expenseCategoryId)
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -226,7 +225,6 @@ export default {
             })
       },
 
-      //TODO
       duplicateExpense(expenseId) {
          this.isLoading = true;
 

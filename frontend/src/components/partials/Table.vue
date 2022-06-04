@@ -14,12 +14,12 @@
             <td>{{ category.name }}</td>
             <td v-if="category.hasOwnProperty('category')">{{ category.category.name }}</td>
             <td>
-                  <button @click="$emit('edit', true), $emit('fill', category)" class="btn btn-primary mx-2">
-                     <i class="fa-solid fa-pen"></i>
-                  </button>
-                  <button @click="$emit('delete', category.id)" class="btn btn-danger mx-2">
-                     <i class="fa-solid fa-trash"></i>
-                  </button>
+               <button @click="openModifyModal(category)" class="btn btn-primary mx-2">
+                  <i class="fa-solid fa-pen"></i>
+               </button>
+               <button @click="$emit('delete', category.id)" class="btn btn-danger mx-2">
+                  <i class="fa-solid fa-trash"></i>
+               </button>
             </td>
          </tr>
       </tbody>
@@ -31,17 +31,24 @@ export default {
 
    name: "Table",
    props: {
-      categories: Array
+      categories: Array,
    },
 
    data() {
       return {
-         
+         subcategoryOperation: false
       }
    },
 
    methods: {
+      openModifyModal(category) {
 
+         this.categories[0].hasOwnProperty('category') ? this.subcategoryOperation = true : this.subcategoryOperation = false;
+         
+         this.$emit('setCategoryType', this.subcategoryOperation);
+         this.$emit('edit', true);
+         this.$emit('fill', category);
+      }
    },
 
    mounted() {
