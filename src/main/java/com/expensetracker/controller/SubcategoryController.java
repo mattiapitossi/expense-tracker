@@ -24,14 +24,6 @@ public class SubcategoryController {
         return subcategoryService.getAllSubcategories();
     }
 
-//    @GetMapping("/subcategory/{id}")
-//    ResponseEntity<?> readSubcategoryById(@PathVariable(name = "id") Integer subcategoryId) {
-//        return categoryService
-//                .findCategoryById(subcategoryId)
-//                .map(response -> ResponseEntity.ok().body(response))
-//                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-//    }
-
     @PostMapping("/subcategory")
     ResponseEntity<Subcategory> createSubcategory(@Valid @RequestBody Subcategory subcategory) throws URISyntaxException {
         System.out.println(subcategory);
@@ -39,16 +31,16 @@ public class SubcategoryController {
         return ResponseEntity.created(new URI("/api/subcategory" + res.getId())).body(res);
     }
 
-//    @PutMapping("/subcategory")
-//    ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category) {
-//        var res = categoryService.modifyCategory(category);
-//        return ResponseEntity.ok().body(res);
-//    }
-//
-//    @DeleteMapping("/subcategory/{id}")
-//    ResponseEntity<?> deleteCategory(@PathVariable(name = "id") Integer subcategoryId) {
-//        System.out.println("subcategoryId: " + subcategoryId);
-//        categoryService.deleteById(subcategoryId);
-//        return ResponseEntity.ok().build();
-//    }
+    @PutMapping("/subcategory")
+    ResponseEntity<Subcategory> updateSubcategory(@Valid @RequestBody Subcategory subcategory) {
+        var res = subcategoryService.modifySubcategory(subcategory);
+        return ResponseEntity.ok().body(res);
+    }
+
+    @DeleteMapping("/subcategory/{id}")
+    ResponseEntity<Subcategory> deleteCategory(@PathVariable(name = "id") Integer subcategoryId) {
+        System.out.println("subcategoryId: " + subcategoryId);
+        subcategoryService.deleteById(subcategoryId);
+        return ResponseEntity.ok().build();
+    }
 }
