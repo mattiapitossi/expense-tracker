@@ -107,13 +107,12 @@
 <script>
 import Loading from "../components/partials/Loading.vue";
 import Table from "../components/partials/Table.vue"
-import FormCategory from "../components/partials/FormCategory.vue";
 import gsap from "gsap";
 
 export default {
 
     name: "CategoriesView",
-    components: { Loading, Table, FormCategory },
+    components: { Loading, Table },
 
     data() {
         return {
@@ -147,6 +146,7 @@ export default {
                     if (response.data.length != 0) {
                         this.categories = response.data;
                         this.dataSubcategory.category = this.categories[0].name;
+                        console.log(this.dataSubcategory);
                     }
                     this.isLoadingCategory = false;
                 })
