@@ -17,6 +17,8 @@
                <button @click="openModifyModal(category)" class="btn btn-primary mx-2">
                   <i class="fa-solid fa-pen"></i>
                </button>
+               
+               <!-- //TODO DELETE ALERT CAUSE CASCADE ON SUBCATEGORIES -->
                <button @click="$emit('delete', category.id)" class="btn btn-danger mx-2">
                   <i class="fa-solid fa-trash"></i>
                </button>

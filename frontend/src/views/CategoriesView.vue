@@ -143,10 +143,9 @@ export default {
             this.isLoadingCategory = true;
             this.axios.get("api/category")
                 .then(response => {
-                    if (response.data.length != 0) {
-                        this.categories = response.data;
+                    this.categories = response.data;
+                    if (this.categories.length > 0) {
                         this.dataSubcategory.category = this.categories[0].name;
-                        console.log(this.dataSubcategory);
                     }
                     this.isLoadingCategory = false;
                 })
@@ -224,6 +223,7 @@ export default {
             this.axios.delete("api/category/" + categoryId)
                 .then(response => {
                     this.getCategories()
+                    this.getSubcategories()
                 })
                 .catch(error => {
                     console.log(error);
@@ -279,7 +279,7 @@ export default {
 
             this.dataSubcategory.id = null;
             this.dataSubcategory.name = null;
-            if (this.categories) {
+            if (this.categories != null && this.categories.length > 0) {
                 this.dataSubcategory.category = this.categories[0].name;
             }
         },

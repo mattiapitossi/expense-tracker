@@ -18,7 +18,8 @@ header {
       padding: 10px;
       transition: all .2s;
 
-      &:hover {
+      &:hover,
+      &.active {
          background-color: $white;
          // filter: invert(100%);
          color: black;
