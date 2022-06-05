@@ -3,6 +3,7 @@ package com.expensetracker.service;
 import com.expensetracker.model.*;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.ExpenseRepository;
+import com.expensetracker.repository.SubcategoryRepository;
 import com.expensetracker.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,8 @@ public class ExpenseService {
 
     private final WalletRepository walletRepository;
 
+    private final SubcategoryRepository subcategoryRepository;
+
     private final WalletTransactionService walletTransactionService;
 
     public boolean expenseWithCategoryExist(Integer categoryId) {
@@ -34,10 +37,6 @@ public class ExpenseService {
         Expense oldExpense = expenseRepository.findById(expenseId).get();
         Expense newExpense = new Expense();
         BeanUtils.copyProperties(oldExpense, newExpense);
-//
-//        WalletTransaction walletTransaction = walletTransactionService.findByExpenseId(expenseId);
-//        walletTransaction.setExpense(newExpense);
-//        walletTransactionService.createWalletTransaction(walletTransaction);
 
         newExpense.setId(null);
         newExpense.setSubcategory(new Subcategory());
@@ -60,7 +59,8 @@ public class ExpenseService {
         if (expense.getSubcategory().getName() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
-            //TODO add secondaryCategory
+            Subcategory subcategory = subcategoryRepository.findByName(expense.getSubcategory().getName());
+            expense.setSubcategory(subcategory);
         }
 
         Wallet wallet = walletRepository.findByName(expense.getWallet().getName());
@@ -87,7 +87,8 @@ public class ExpenseService {
         if (expense.getSubcategory().getName() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
-            //TODO add secondaryCategory
+            Subcategory subcategory = subcategoryRepository.findByName(expense.getSubcategory().getName());
+            expense.setSubcategory(subcategory);
         }
 
         //check if wallet in walletTransaction has been changed
