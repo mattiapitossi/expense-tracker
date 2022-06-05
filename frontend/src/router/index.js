@@ -8,7 +8,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   mode: 'history',
   linkExactActiveClass: 'active',
-  
+
   routes: [
     {
       path: '/',
@@ -26,17 +26,11 @@ const router = createRouter({
     {
       path: '/categories',
       name: 'categories',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: CategoriesView
     },
     {
       path: '/wallets',
       name: 'wallets',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: WalletsView
     }
   ]

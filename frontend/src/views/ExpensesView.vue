@@ -18,19 +18,22 @@
          <form v-else @submit.prevent="modify ? modifyExpense() : addExpense()">
             <div class="mb-3 me-3 d-inline-block">
                <label for="category" class="form-label d-block">Category</label>
-               <select name="category" id="category" v-model="data.category">
+               <RouterLink v-if="categories == null || categories.length == 0" class="fs-4 text-black" :to="{name: 'categories'}">&plus;</RouterLink>
+               <select v-else name="category" id="category" v-model="data.category">
                   <option v-for="item in categories" :key="item.id" :value="item.name">{{ item.name }}</option>
                </select>
             </div>
             <div class="mb-3 me-3 d-inline-block">
                <label for="subcategory" class="form-label d-block">Subcategory</label>
-               <select name="subcategory" id="subcategory" v-model="data.subcategory">
+               <RouterLink v-if="subcategories == null || subcategories.length == 0" class="fs-4 text-black" :to="{name: 'categories'}">&plus;</RouterLink>
+               <select v-else name="subcategory" id="subcategory" v-model="data.subcategory">
                   <option v-for="item in subcategories" :key="item.id" :value="item.name">{{ item.name }}</option>
                </select>
             </div>
             <div class="mb-3 me-3 d-inline-block">
                <label for="wallet" class="form-label d-block">Wallet</label>
-               <select name="wallet" id="wallet" v-model="data.wallet">
+               <RouterLink v-if="wallets == null || wallets.length == 0" class="fs-4 text-black" :to="{name: 'wallets'}">&plus;</RouterLink>
+               <select v-else name="wallet" id="wallet" v-model="data.wallet">
                   <option v-for="item in wallets" :key="item.id" :value="item.name">{{ item.name }}</option>
                </select>
             </div>
@@ -62,7 +65,8 @@
                   placeholder="Location">
             </div>
             <div class="py-3 d-flex justify-content-center">
-               <button type="submit" class="btn btn-primary d-block">Submit</button>
+               <button :disabled="(categories == null || categories.length == 0) && (subcategories == null || subcategories.length == 0)"
+               type="submit" class="btn btn-primary d-block">Submit</button>
             </div>
          </form>
       </div>
@@ -72,6 +76,8 @@
       <div class="d-flex justify-content-center">
 
          <Loading v-if="isLoading" />
+
+         <h2 v-else-if="expenses == null || expenses.length == 0">No expenses present. Add one!</h2>
 
          <table v-else class="table">
             <thead>
