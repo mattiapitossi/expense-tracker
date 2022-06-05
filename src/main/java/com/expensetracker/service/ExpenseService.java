@@ -33,6 +33,10 @@ public class ExpenseService {
         return expenseRepository.existsByWallet_Id(walletId);
     }
 
+    public List<Expense> expensesLinkedToWallet(Wallet wallet) {
+        return expenseRepository.getExpenseByWallet(wallet);
+    }
+
     public Expense duplicateExpense(Integer expenseId) {
         Expense oldExpense = expenseRepository.findById(expenseId).get();
         Expense newExpense = new Expense();

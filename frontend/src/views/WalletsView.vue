@@ -34,6 +34,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Value</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                     <tr v-for="wallet in wallets" :key="wallet.id">
                         <th scope="row">{{ wallet.id }}</th>
                         <td>{{ wallet.name }}</td>
+                        <td>{{ wallet.value }} €</td>
                         <td>
                             <button @click="animateModal(true), fillFormFields(wallet)" class="btn btn-primary mx-2">
                                 <i class="fa-solid fa-pen"></i>

@@ -22,7 +22,14 @@ public class WalletController {
 
     @GetMapping("/wallets")
     List<Wallet> readWallets() {
-        return walletService.getWallets();
+
+        List<Wallet> walletList = walletService.getWallets();
+
+        for(Wallet wallet : walletList) {
+            wallet.setValue(walletService.getValue(wallet));
+        }
+
+        return walletList;
     }
 
     @PostMapping("/wallets")

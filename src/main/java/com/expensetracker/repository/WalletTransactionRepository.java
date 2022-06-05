@@ -17,4 +17,6 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
 
     @Transactional
     void deleteByExpenseId(Integer expenseId);
+
+    boolean existsByWallet(Wallet wallet);
 }
