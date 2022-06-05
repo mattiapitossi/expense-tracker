@@ -4,7 +4,7 @@
          <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th v-if="categories[0].hasOwnProperty('category')" scope="col">Category</th>
+            <th v-if="(categories.length > 0) && (categories[0].hasOwnProperty('category'))" scope="col">Category</th>
             <th scope="col">Actions</th>
          </tr>
       </thead>

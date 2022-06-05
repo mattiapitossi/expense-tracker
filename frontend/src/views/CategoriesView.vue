@@ -66,7 +66,7 @@
                 <div class="d-flex justify-content-center">
                     <Loading v-if="isLoadingCategory" />
 
-                    <h2 v-else-if="categories == null" class="text-center">No categories present. Add one!</h2>
+                    <h2 v-else-if="categories == null || categories.length == 0" class="text-center">No categories present. Add one!</h2>
         
                     <Table v-else
                         :categories="categories"
@@ -88,7 +88,7 @@
                 <div class="d-flex justify-content-center">
                     <Loading v-if="isLoadingSubcategory" />
 
-                    <h2 v-else-if="subcategories == null" class="text-center">No subcategories present. Add one!</h2>
+                    <h2 v-else-if="subcategories == null || subcategories.length == 0" class="text-center">No subcategories present. Add one!</h2>
 
                     <Table v-else
                         :categories="subcategories"
