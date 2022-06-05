@@ -3,7 +3,7 @@
 
       <div class="d-flex justify-content-between py-5">
          <h1>EXPENSES</h1>
-         <button class="btn btn-success" @click="animateModal(true), getCategories(), getWallets()">ADD EXPENSE</button>
+         <button class="btn btn-success" @click="animateModal(true), getCategories(), getSubcategories(), getWallets()">ADD EXPENSE</button>
       </div>
 
       <!-- //MODAL// -->
@@ -84,6 +84,7 @@
                <tr>
                   <th scope="col">#</th>
                   <th scope="col">Category</th>
+                  <th scope="col">Subcategory</th>
                   <th scope="col">Description</th>
                   <th scope="col">Value</th>
                   <th scope="col">Date</th>
@@ -97,6 +98,7 @@
                <tr v-for="expense in expenses" :key="expense.id">
                   <th scope="row">{{ expense.id }}</th>
                   <td>{{ expense.category.name }}</td>
+                  <td>{{ expense.subcategory != null ? expense.subcategory.name : null}}</td>
                   <td>{{ expense.description }}</td>
                   <td>{{ expense.value }} €</td>
                   <td>{{ expense.expense_date }}</td>
@@ -163,8 +165,8 @@ export default {
          this.isLoadingForm = true
          this.axios.get("api/category")
             .then(response => {
-               if (response.data.length != 0) {
-                  this.categories = response.data;
+               this.categories = response.data;
+               if (this.categories != 0) {
                   this.data.category = this.categories[0].name;
                }
                this.isLoadingForm = false
@@ -174,12 +176,37 @@ export default {
             })
       },
 
+      getSubcategories() {
+            this.isLoadingForm = true;
+            this.axios.get("api/subcategory")
+               .then(response => {
+                  this.subcategories = response.data;
+                  if (this.subcategories != 0) {
+                  this.data.subcategory = this.subcategories[0].name;
+               }
+                  this.isLoadingForm = false;
+               });
+      },
+
       getCategoriesForModify(expenseCategoryId) {
          this.isLoadingForm = true
          this.axios.get("api/category")
             .then(response => {
                this.categories = response.data
                this.setCategory(expenseCategoryId)
+               this.isLoadingForm = false
+            })
+            .catch(error => {
+               console.log(error);
+            })
+      },
+
+      getSubcategoriesForModify(expenseSubcategoryId) {
+         this.isLoadingForm = true
+         this.axios.get("api/subcategory")
+            .then(response => {
+               this.subcategories = response.data
+               this.setSubcategory(expenseSubcategoryId)
                this.isLoadingForm = false
             })
             .catch(error => {
@@ -287,6 +314,11 @@ export default {
 
          this.getCategoriesForModify(expense.category.id);
          this.getWalletsForModify(expense.wallet.id);
+         if (expense.subcategory == null) {
+            this.getSubcategoriesForModify(0);
+         } else {
+            this.getSubcategoriesForModify(expense.subcategory.id);
+         }
 
          //modify mode ON
          this.modify = true;
@@ -306,6 +338,13 @@ export default {
             }
          });
       },
+      setSubcategory(expenseSubcategoryId) {
+         this.subcategories.forEach(subcategory => {
+            if (subcategory.id === expenseSubcategoryId) {
+               this.data.subcategory = subcategory.name;
+            }
+         });
+      },
 
       setWallet(expenseWalletId) {
          this.wallets.forEach(wallet => {
@@ -320,19 +359,17 @@ export default {
          this.modify = false;
 
          this.data.id = null
-         this.data.title = null;
          this.data.description = null;
          this.data.location = null;
          this.data.expense_date = this.getTodayDate();
          this.data.value = null;
          this.data.category = null;
+         this.data.subcategory = null;
          this.data.wallet = null;
          this.data.typeOfTransaction = "OUT";
-         this.data.typeOfPayment = "CASH";
       },
 
       animateModal(action) {
-
          ///check if form is sending new expense
          if (!this.isLoadingForm) {
 
