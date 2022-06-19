@@ -22,18 +22,22 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll();
     }
 
+    @Override
     public Optional<Category> findCategoryById(Integer id) {
         return categoryRepository.findById(id);
     }
 
+    @Override
     public Category createNewCategory(Category category) {
         return categoryRepository.save(category);
     }
 
+    @Override
     public Category modifyCategory(Category category) {
         return categoryRepository.save(category);
     }
 
+    @Override
     public void deleteById(Integer categoryId) {
         if(!expenseService.expenseWithCategoryExist(categoryId)) {
             categoryRepository.deleteById(categoryId);
@@ -42,6 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Override
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
