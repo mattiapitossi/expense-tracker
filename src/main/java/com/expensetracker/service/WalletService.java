@@ -3,7 +3,8 @@ package com.expensetracker.service;
 import com.expensetracker.model.Expense;
 import com.expensetracker.model.Wallet;
 import com.expensetracker.repository.WalletRepository;
-import lombok.Data;
+import com.expensetracker.repository.WalletTransactionRepository;
+import com.expensetracker.service.impl.ExpenseServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import java.util.List;
 public class WalletService {
 
     private final WalletRepository walletRepository;
+
+    private final WalletTransactionRepository walletTransactionRepository;
 
     private final ExpenseService expenseService;
 
@@ -33,7 +36,7 @@ public class WalletService {
         if(!expenseService.expenseWithWalletExist(walletId)) {
             walletRepository.deleteById(walletId);
         } else {
-            //TODO throw clientError
+            //TODO: throw clientError
         }
     }
 
@@ -45,7 +48,7 @@ public class WalletService {
 
             for(Expense expense: expensesList) {
                 switch(expense.getTypeOfTransaction()) {
-                    //TODO INOUT and OUTIN
+                    //TODO: INOUT and OUTIN
                     case "IN":
                         value += expense.getValue();
                         break;
