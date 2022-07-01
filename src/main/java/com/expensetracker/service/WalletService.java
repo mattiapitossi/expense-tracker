@@ -3,7 +3,6 @@ package com.expensetracker.service;
 import com.expensetracker.model.Expense;
 import com.expensetracker.model.Wallet;
 import com.expensetracker.repository.WalletRepository;
-import com.expensetracker.repository.WalletTransactionRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,6 @@ import java.util.List;
 public class WalletService {
 
     private final WalletRepository walletRepository;
-
-    private final WalletTransactionRepository walletTransactionRepository;
 
     private final ExpenseService expenseService;
 
