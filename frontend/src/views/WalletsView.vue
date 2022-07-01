@@ -20,10 +20,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="value" class="form-label">Value</label>
-                    <input type="number" class="form-control" id="value" name="value" v-model="data.value" placeholder="0.0" step="0.10">
+                    <input type="number" class="form-control" id="value" name="value" v-model="data.value" placeholder="0.0" step="0.01">
                 </div>
                 <div class="py-3 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary d-block">Submit</button>
+                    <button :disabled="data.name == null || data.name.length == 0"
+                    type="submit" class="btn btn-primary d-block">Submit</button>
                 </div>
             </form>
         </div>

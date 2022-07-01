@@ -19,11 +19,11 @@ public class FilesList implements Serializable {
     @Id
     @JoinColumn(name = "file_id")
     @ManyToOne
-    public File file;
+    private File file;
 
     @Id
     @JoinColumn(name = "expense_id")
     @OneToOne
-    public Expense expense;
+    private Expense expense;
 
 }

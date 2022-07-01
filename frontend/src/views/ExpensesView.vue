@@ -48,7 +48,7 @@
             </div>
             <div class="mb-3">
                <label for="value" class="form-label">Value</label>
-               <input type="number" class="form-control" id="value" name="value" v-model="data.value" step="0.10">
+               <input type="number" class="form-control" id="value" name="value" v-model="data.value" step="0.01">
             </div>
             <div class="mb-3">
                <label for="expense_date" class="form-label">Date</label>
