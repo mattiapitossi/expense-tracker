@@ -33,7 +33,7 @@ public class WalletService {
         if(!expenseService.expenseWithWalletExist(walletId)) {
             walletRepository.deleteById(walletId);
         } else {
-            //TODO throw clientError
+            //TODO: throw clientError
         }
     }
 
@@ -45,7 +45,7 @@ public class WalletService {
 
             for(Expense expense: expensesList) {
                 switch(expense.getTypeOfTransaction()) {
-                    //TODO INOUT and OUTIN
+                    //TODO: INOUT and OUTIN
                     case "IN":
                         value += expense.getValue();
                         break;
