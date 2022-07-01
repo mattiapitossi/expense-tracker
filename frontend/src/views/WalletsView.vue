@@ -18,6 +18,10 @@
                     <input type="text" class="form-control" id="name" name="name" v-model="data.name"
                         placeholder="Name">
                 </div>
+                <div class="mb-3">
+                    <label for="value" class="form-label">Value</label>
+                    <input type="number" class="form-control" id="value" name="value" v-model="data.value" placeholder="0.0" step="0.10">
+                </div>
                 <div class="py-3 d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary d-block">Submit</button>
                 </div>
@@ -80,7 +84,8 @@ export default {
             //form field ->
             data: {
                 id: null,
-                name: null
+                name: null,
+                value: 0.0
             },
         }
     },
