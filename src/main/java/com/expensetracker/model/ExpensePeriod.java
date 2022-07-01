@@ -27,15 +27,19 @@ public class ExpensePeriod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonProperty("period_start_date")
     @Column(name = "start_date")
     private LocalDate startDate;
 
+    @JsonProperty("period_end_date")
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @JsonProperty("period_date")
     @Column(name = "period_date")
     private Integer periodDate;
 
+    @JsonProperty("period_type")
     @Column(name = "period_type")
     private String periodType;
 
