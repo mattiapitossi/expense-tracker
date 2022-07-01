@@ -5,7 +5,6 @@ import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.ExpenseRepository;
 import com.expensetracker.repository.SubcategoryRepository;
 import com.expensetracker.repository.WalletRepository;
-import com.expensetracker.service.WalletTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,6 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     private final WalletRepository walletRepository;
 
     private final SubcategoryRepository subcategoryRepository;
-
-    private final WalletTransactionService walletTransactionService;
 
     @Override
     public boolean expenseWithCategoryExist(Integer categoryId) {
@@ -59,7 +56,6 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
 
     @Override
     public void deleteExpenseById(Integer expenseId) {
-        walletTransactionService.deleteWalletTransactionByExpenseId(expenseId);
         expenseRepository.deleteById(expenseId);
     }
 
@@ -80,13 +76,6 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
 
         expenseRepository.save(expense);
 
-        //TODO add files to wallet transaction
-        WalletTransaction walletTransaction = new WalletTransaction();
-        walletTransaction.setExpense(expense);
-        walletTransaction.setWallet(wallet);
-
-        walletTransactionService.createWalletTransaction(walletTransaction);
-
         return expense;
     }
 
@@ -95,19 +84,12 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         Expense oldExpense = expenseRepository.findById(expense.getId()).get();
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         Wallet wallet = walletRepository.findByName(expense.getWallet().getName());
-        WalletTransaction walletTransaction = walletTransactionService.findByExpenseId(oldExpense.getId());
 
         if (expense.getSubcategory().getName() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
             Subcategory subcategory = subcategoryRepository.findByName(expense.getSubcategory().getName());
             expense.setSubcategory(subcategory);
-        }
-
-        //check if wallet in walletTransaction has been changed
-        if (walletTransaction.getWallet().getId() != wallet.getId()) {
-            walletTransaction.setWallet(wallet);
-            walletTransactionService.modifyWalletTransaction(walletTransaction);
         }
 
         expense.setCategory(category);
