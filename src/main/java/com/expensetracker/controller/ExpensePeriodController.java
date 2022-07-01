@@ -26,6 +26,7 @@ public class ExpensePeriodController {
 
     @PostMapping("/period")
     ResponseEntity<ExpensePeriod> createExpensePeriod(@Valid @RequestBody ExpensePeriod expensePeriod) throws URISyntaxException {
+        System.out.println("EXPENSE PERIODDDDDD _____ :::::::" + expensePeriod);
         ExpensePeriod result = expensePeriodService.createNewExpensePeriod(expensePeriod);
         return ResponseEntity.created(new URI("/api/expense/period" + result.getId())).body(result);
     }
