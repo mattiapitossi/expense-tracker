@@ -1,10 +1,8 @@
 package com.expensetracker.controller;
 
-import com.expensetracker.model.Category;
 import com.expensetracker.model.Wallet;
 import com.expensetracker.service.WalletService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +44,7 @@ public class WalletController {
     }
 
     @DeleteMapping("/wallets/{id}")
-    ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
-        System.out.println("category: " + id);
+    ResponseEntity<?> deleteWallet(@PathVariable Integer id) {
         walletService.deleteById(id);
         return ResponseEntity.ok().build();
     }
