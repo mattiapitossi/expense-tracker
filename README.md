@@ -12,10 +12,6 @@ Move into resources folder within your terminal and run
 
 ```docker compose up mysql-db```
 
-Then connect to the newly created database (e.g. DBeaver) and run (This step will be automated in future)
-
-```CREATE DATABASE expense_tracker;```
-
 Now, you can build the server application with
 
 ```mvn clean install```
@@ -33,4 +29,4 @@ First run
 
 And then
 
-```npm run dev```
+```npm run build```
