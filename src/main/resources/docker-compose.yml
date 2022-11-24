@@ -5,6 +5,6 @@ services:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: root
+      MYSQL_DATABASE: expense_tracker
     ports:
       - "3306:3306"
