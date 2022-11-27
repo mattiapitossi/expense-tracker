@@ -8,6 +8,8 @@ import java.util.List;
 public interface ExpensePeriodService {
     ExpensePeriod createNewExpensePeriod(ExpensePeriod expensePeriod);
 
+    void createExpenses(ExpensePeriod expensePeriod);
+
     List<ExpensePeriod> getAllExpensesPeriod();
 
     ExpensePeriod modifyExpensePeriod(ExpensePeriod expensePeriod);

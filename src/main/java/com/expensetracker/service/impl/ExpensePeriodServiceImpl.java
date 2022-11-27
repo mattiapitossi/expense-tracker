@@ -1,15 +1,14 @@
 package com.expensetracker.service.impl;
 
 import com.expensetracker.model.*;
-import com.expensetracker.repository.CategoryRepository;
-import com.expensetracker.repository.ExpensePeriodRepository;
-import com.expensetracker.repository.SubcategoryRepository;
-import com.expensetracker.repository.WalletRepository;
+import com.expensetracker.repository.*;
 import com.expensetracker.service.ExpensePeriodService;
+import com.expensetracker.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,6 +16,8 @@ import java.util.List;
 public class ExpensePeriodServiceImpl implements ExpensePeriodService {
 
     private final ExpensePeriodRepository expensePeriodRepository;
+
+    private final ExpenseService expenseService;
 
     private final CategoryRepository categoryRepository;
 
@@ -39,14 +40,47 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
         Wallet wallet = walletRepository.findByName(expensePeriod.getWallet().getName());
         expensePeriod.setWallet(wallet);
 
+        expensePeriod.setNextPayment(expensePeriod.getStartDate());
+
+        createExpenses(expensePeriod);
+
         return expensePeriodRepository.save(expensePeriod);
+    }
+
+    @Override
+    public void createExpenses(ExpensePeriod expensePeriod) {
+        while(!expensePeriod.getNextPayment().isAfter(LocalDate.now())) {
+            expenseService.saveExpenseFromPeriod(expensePeriod);
+
+            setExpenseNextPayment(expensePeriod);
+            expensePeriodRepository.save(expensePeriod);
+        }
+    }
+
+    private void setExpenseNextPayment(ExpensePeriod expensePeriod) {
+        switch (expensePeriod.getPeriodType()) {
+            case "YEAR":
+                expensePeriod.setNextPayment(
+                        expensePeriod.getNextPayment().plusYears(expensePeriod.getPeriodDate())
+                );
+                break;
+            case "MONTH":
+                expensePeriod.setNextPayment(
+                        expensePeriod.getNextPayment().plusMonths(expensePeriod.getPeriodDate())
+                );
+                break;
+            case "DAY":
+                expensePeriod.setNextPayment(
+                        expensePeriod.getNextPayment().plusDays(expensePeriod.getPeriodDate())
+                );
+                break;
+        }
     }
 
     @Override
     public List<ExpensePeriod> getAllExpensesPeriod() {
         return expensePeriodRepository.findAll();
     }
-
 
 
     @Override
@@ -72,7 +106,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
     }
 
 
-      @Override
+    @Override
     public ExpensePeriod duplicateExpensePeriod(Integer expenseId) {
         ExpensePeriod oldExpense = expensePeriodRepository.findById(expenseId).get();
         ExpensePeriod newExpense = new ExpensePeriod();

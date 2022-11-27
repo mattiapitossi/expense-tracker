@@ -1,5 +1,6 @@
 package com.expensetracker.service.impl;
 
+import com.expensetracker.mapper.ExpenseMapper;
 import com.expensetracker.model.*;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.ExpenseRepository;
@@ -22,6 +23,8 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     private final WalletRepository walletRepository;
 
     private final SubcategoryRepository subcategoryRepository;
+
+    private final ExpenseMapper expenseMapper;
 
     @Override
     public boolean expenseWithCategoryExist(Integer categoryId) {
@@ -99,5 +102,11 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         BeanUtils.copyProperties(expense, oldExpense);
 
         return expenseRepository.save(oldExpense);
+    }
+
+    @Override
+    public void saveExpenseFromPeriod(ExpensePeriod expensePeriod) {
+        Expense expense = expenseMapper.periodToExpense(expensePeriod);
+        expenseRepository.save(expense);
     }
 }
