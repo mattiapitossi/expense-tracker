@@ -24,10 +24,31 @@ public class ExpensePeriodController {
         return expensePeriodService.getAllExpensesPeriod();
     }
 
+    @DeleteMapping("/period/{id}")
+    ResponseEntity<?> deleteExpense(@PathVariable Integer id) {
+        expensePeriodService.deleteExpensePeriodById(id);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/period")
     ResponseEntity<ExpensePeriod> createExpensePeriod(@Valid @RequestBody ExpensePeriod expensePeriod) throws URISyntaxException {
-        System.out.println("EXPENSE PERIODDDDDD _____ :::::::" + expensePeriod);
+        System.out.println("EXPENSE PERIOD _____ :::::::" + expensePeriod);
         ExpensePeriod result = expensePeriodService.createNewExpensePeriod(expensePeriod);
+        return ResponseEntity.created(new URI("/api/expense/period" + result.getId())).body(result);
+    }
+
+    @PostMapping("/period/{id}")
+    ResponseEntity<ExpensePeriod> duplicateExpense(@PathVariable(name = "id") Integer expenseId) throws URISyntaxException {
+        System.out.println(expenseId);
+        ExpensePeriod result = expensePeriodService.duplicateExpensePeriod(expenseId);
+        return ResponseEntity.created(new URI("/api/expense/period" + result.getId())).body(result);
+    }
+
+    @PutMapping("/period")
+    ResponseEntity<ExpensePeriod> modifyExpense(@Valid @RequestBody ExpensePeriod expense) throws URISyntaxException {
+        System.out.println(expense);
+        ExpensePeriod result = expensePeriodService.modifyExpensePeriod(expense);
         return ResponseEntity.created(new URI("/api/expense/period" + result.getId())).body(result);
     }
 }
