@@ -3,7 +3,6 @@ package com.expensetracker.service;
 import com.expensetracker.model.Expense;
 import com.expensetracker.model.Wallet;
 import com.expensetracker.repository.WalletRepository;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,5 @@
 package com.expensetracker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
@@ -8,18 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Data
 @Table(name="expense_period")
-@NotNull
 public class ExpensePeriod {
 
     @Id
@@ -30,6 +24,10 @@ public class ExpensePeriod {
     @JsonProperty("period_start_date")
     @Column(name = "start_date")
     private LocalDate startDate;
+
+    @JsonProperty("period_next_payment")
+    @Column(name = "next_payment")
+    private LocalDate nextPayment;
 
     @JsonProperty("period_end_date")
     @Column(name = "end_date")
