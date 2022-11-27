@@ -176,18 +176,6 @@ export default {
             })
       },
 
-      getSubcategories() {
-            this.isLoadingForm = true;
-            this.axios.get("api/subcategory")
-               .then(response => {
-                  this.subcategories = response.data;
-                  if (this.subcategories != 0) {
-                  this.data.subcategory = this.subcategories[0].name;
-               }
-                  this.isLoadingForm = false;
-               });
-      },
-
       getCategoriesForModify(expenseCategoryId) {
          this.isLoadingForm = true
          this.axios.get("api/category")
@@ -199,6 +187,18 @@ export default {
             .catch(error => {
                console.log(error);
             })
+      },
+
+      getSubcategories() {
+            this.isLoadingForm = true;
+            this.axios.get("api/subcategory")
+               .then(response => {
+                  this.subcategories = response.data;
+                  if (this.subcategories != 0) {
+                  this.data.subcategory = this.subcategories[0].name;
+               }
+                  this.isLoadingForm = false;
+               });
       },
 
       getSubcategoriesForModify(expenseSubcategoryId) {
