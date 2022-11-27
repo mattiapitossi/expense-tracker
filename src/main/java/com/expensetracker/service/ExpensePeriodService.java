@@ -9,4 +9,10 @@ public interface ExpensePeriodService {
     ExpensePeriod createNewExpensePeriod(ExpensePeriod expensePeriod);
 
     List<ExpensePeriod> getAllExpensesPeriod();
+
+    ExpensePeriod modifyExpensePeriod(ExpensePeriod expensePeriod);
+
+    ExpensePeriod duplicateExpensePeriod(Integer expenseId);
+
+    void deleteExpensePeriodById(Integer expenseId);
 }
