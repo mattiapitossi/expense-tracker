@@ -58,17 +58,15 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
     }
 
     private void setExpenseNextPayment(ExpensePeriod expensePeriod) {
-        LocalDate nextPayment = null;
+        LocalDate nextPayment = switch (expensePeriod.getPeriodType()) {
+            case "YEAR" -> expensePeriod.getNextPayment().plusYears(expensePeriod.getPeriodDate());
 
-        switch (expensePeriod.getPeriodType()) {
-            case "YEAR" -> nextPayment = expensePeriod.getNextPayment().plusYears(expensePeriod.getPeriodDate());
+            case "MONTH" -> expensePeriod.getNextPayment().plusMonths(expensePeriod.getPeriodDate());
 
-            case "MONTH" -> nextPayment = expensePeriod.getNextPayment().plusMonths(expensePeriod.getPeriodDate());
+            case "DAY" -> expensePeriod.getNextPayment().plusDays(expensePeriod.getPeriodDate());
 
-            case "DAY" -> nextPayment = expensePeriod.getNextPayment().plusDays(expensePeriod.getPeriodDate());
-
-            default -> expensePeriod.setNextPayment(null);
-        }
+            default -> null;
+        };
 
         if (expensePeriod.getEndDate() != null && expensePeriod.getEndDate().isBefore(nextPayment)) {
             expensePeriod.setNextPayment(null);
