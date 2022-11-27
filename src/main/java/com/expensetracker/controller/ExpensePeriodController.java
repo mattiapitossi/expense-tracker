@@ -20,8 +20,8 @@ public class ExpensePeriodController {
     private final ExpensePeriodServiceImpl expensePeriodService;
 
     @GetMapping("/period")
-    List<ExpensePeriod> getExpenses() {
-        return expensePeriodService.getAllExpensesPeriod();
+    ResponseEntity<List<ExpensePeriod>> getExpenses() {
+        return ResponseEntity.ok().body(expensePeriodService.getAllExpensesPeriod());
     }
 
     @DeleteMapping("/period/{id}")

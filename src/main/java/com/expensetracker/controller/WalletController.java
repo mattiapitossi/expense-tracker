@@ -19,7 +19,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @GetMapping("/wallets")
-    List<Wallet> readWallets() {
+    ResponseEntity<List<Wallet>> readWallets() {
 
         List<Wallet> walletList = walletService.getWallets();
 
@@ -27,12 +27,11 @@ public class WalletController {
             wallet.setValue(walletService.getValue(wallet));
         }
 
-        return walletList;
+        return ResponseEntity.ok().body(walletList);
     }
 
     @PostMapping("/wallets")
     ResponseEntity<Wallet> createWallet(@Valid @RequestBody Wallet wallet) throws URISyntaxException {
-        System.out.println(wallet);
         var res = walletService.createWallet(wallet);
         return ResponseEntity.created(new URI("/api/wallets" + res.getId())).body(res);
     }

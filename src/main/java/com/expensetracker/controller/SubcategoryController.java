@@ -20,13 +20,12 @@ public class SubcategoryController {
     private final SubcategoryService subcategoryService;
 
     @GetMapping("/subcategory")
-    List<Subcategory> readSubcategories() {
-        return subcategoryService.getAllSubcategories();
+    ResponseEntity<List<Subcategory>> readSubcategories() {
+        return ResponseEntity.ok().body(subcategoryService.getAllSubcategories());
     }
 
     @PostMapping("/subcategory")
     ResponseEntity<Subcategory> createSubcategory(@Valid @RequestBody Subcategory subcategory) throws URISyntaxException {
-        System.out.println(subcategory);
         Subcategory res = subcategoryService.createNewSubcategory(subcategory);
         return ResponseEntity.created(new URI("/api/subcategory" + res.getId())).body(res);
     }
@@ -39,7 +38,6 @@ public class SubcategoryController {
 
     @DeleteMapping("/subcategory/{id}")
     ResponseEntity<Subcategory> deleteCategory(@PathVariable(name = "id") Integer subcategoryId) {
-        System.out.println("subcategoryId: " + subcategoryId);
         subcategoryService.deleteById(subcategoryId);
         return ResponseEntity.ok().build();
     }
