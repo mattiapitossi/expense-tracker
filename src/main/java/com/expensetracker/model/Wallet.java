@@ -23,16 +23,6 @@ public class Wallet {
     @Column(name = "name")
     private String name;
 
-    @Transient
-    @JsonSerialize
+    @Column(name = "value")
     private Double value;
-
-    public Double getValue() {
-        return value;
-    }
-
-    @JsonIgnore
-    public void setValue(Double value) {
-        this.value = value;
-    }
 }

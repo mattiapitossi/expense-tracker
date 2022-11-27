@@ -38,8 +38,7 @@ public class WalletService {
     }
 
     public Double getValue(Wallet wallet) {
-        Double value = 0.00;
-
+        double value = wallet.getValue();
         if(expenseService.expenseWithWalletExist(wallet.getId())) {
             List<Expense> expensesList = expenseService.expensesLinkedToWallet(wallet);
 

@@ -16,9 +16,9 @@ public class File {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id;
+    private Integer id;
 
     @Column(name = "url")
-    public String url;
+    private String url;
 
 }
