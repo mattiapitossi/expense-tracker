@@ -1,16 +1,16 @@
-package com.expensetracker.cronjobs;
+package com.expensetracker.utils;
 
 import com.expensetracker.model.ExpensePeriod;
 import com.expensetracker.service.ExpensePeriodService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Component
-public class ExpensesCronJobs {
+@Service
+public class ExpensesUtilsService {
 
     private final ExpensePeriodService expensePeriodService;
 
