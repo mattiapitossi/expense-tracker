@@ -12,6 +12,8 @@ public interface ExpensePeriodService {
 
     List<ExpensePeriod> getAllExpensesPeriod();
 
+    List<ExpensePeriod> getAllActiveExpensesPeriod();
+
     ExpensePeriod modifyExpensePeriod(ExpensePeriod expensePeriod);
 
     ExpensePeriod duplicateExpensePeriod(Integer expenseId);

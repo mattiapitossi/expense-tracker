@@ -25,7 +25,7 @@ public class ExpensePeriod {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @JsonProperty("period_start_date")
+    @JsonProperty("period_next_payment")
     @Column(name = "next_payment")
     private LocalDate nextPayment;
 

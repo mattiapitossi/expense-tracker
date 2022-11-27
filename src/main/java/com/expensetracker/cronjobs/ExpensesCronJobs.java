@@ -16,7 +16,7 @@ public class ExpensesCronJobs {
 
     @PostConstruct
     private void verifyExpensesPeriod() {
-        List<ExpensePeriod> expensePeriodList = expensePeriodService.getAllExpensesPeriod();
+        List<ExpensePeriod> expensePeriodList = expensePeriodService.getAllActiveExpensesPeriod();
 
         expensePeriodList.forEach(expensePeriodService::createExpenses);
     }
