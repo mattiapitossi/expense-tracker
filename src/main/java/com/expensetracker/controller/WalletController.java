@@ -1,10 +1,8 @@
 package com.expensetracker.controller;
 
-import com.expensetracker.model.Category;
 import com.expensetracker.model.Wallet;
 import com.expensetracker.service.WalletService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +19,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @GetMapping("/wallets")
-    List<Wallet> readWallets() {
+    ResponseEntity<List<Wallet>> readWallets() {
 
         List<Wallet> walletList = walletService.getWallets();
 
@@ -29,12 +27,11 @@ public class WalletController {
             wallet.setValue(walletService.getValue(wallet));
         }
 
-        return walletList;
+        return ResponseEntity.ok().body(walletList);
     }
 
     @PostMapping("/wallets")
     ResponseEntity<Wallet> createWallet(@Valid @RequestBody Wallet wallet) throws URISyntaxException {
-        System.out.println(wallet);
         var res = walletService.createWallet(wallet);
         return ResponseEntity.created(new URI("/api/wallets" + res.getId())).body(res);
     }
@@ -46,8 +43,7 @@ public class WalletController {
     }
 
     @DeleteMapping("/wallets/{id}")
-    ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
-        System.out.println("category: " + id);
+    ResponseEntity<?> deleteWallet(@PathVariable Integer id) {
         walletService.deleteById(id);
         return ResponseEntity.ok().build();
     }

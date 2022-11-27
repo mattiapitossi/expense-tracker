@@ -22,8 +22,8 @@ public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
     @GetMapping("/category")
-    List<Category> readCategories() {
-        return categoryService.getAllCategories();
+    ResponseEntity<List<Category>> readCategories() {
+        return ResponseEntity.ok().body(categoryService.getAllCategories());
     }
 
     @GetMapping("/category/{id}")
@@ -36,7 +36,6 @@ public class CategoryController {
 
     @PostMapping("/category")
     ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
-        System.out.println(category);
         var res = categoryService.createNewCategory(category);
         return ResponseEntity.created(new URI("/api/category" + res.getId())).body(res);
     }
@@ -49,7 +48,6 @@ public class CategoryController {
 
     @DeleteMapping("/category/{id}")
     ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
-        System.out.println("category: " + id);
         categoryService.deleteById(id);
         return ResponseEntity.ok().build();
     }
