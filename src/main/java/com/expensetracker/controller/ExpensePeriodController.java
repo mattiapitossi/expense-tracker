@@ -20,13 +20,12 @@ public class ExpensePeriodController {
     private final ExpensePeriodServiceImpl expensePeriodService;
 
     @GetMapping("/period")
-    List<ExpensePeriod> getExpenses() {
-        return expensePeriodService.getAllExpensesPeriod();
+    ResponseEntity<List<ExpensePeriod>> getExpenses() {
+        return ResponseEntity.ok().body(expensePeriodService.getAllExpensesPeriod());
     }
 
     @PostMapping("/period")
     ResponseEntity<ExpensePeriod> createExpensePeriod(@Valid @RequestBody ExpensePeriod expensePeriod) throws URISyntaxException {
-        System.out.println("EXPENSE PERIODDDDDD _____ :::::::" + expensePeriod);
         ExpensePeriod result = expensePeriodService.createNewExpensePeriod(expensePeriod);
         return ResponseEntity.created(new URI("/api/expense/period" + result.getId())).body(result);
     }
