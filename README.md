@@ -4,7 +4,7 @@
 - [Running the Server](#running-the-server)
 - [Running the Client](#running-the-client)
 ## Introduction
-This app allows you to track your daily expenses. You can create multiple wallets along with as many categories and subcategories as you want. Once you create your categories and your wallets, you can insert your expenses.
+This app allows you to track your daily expenses. You can create multiple wallets along with as many categories and subcategories as you want. Once you create your categories and your wallets, you can insert your expenses and view all of them in a dedicated section.
 
 ## :whale: Running the Server
 

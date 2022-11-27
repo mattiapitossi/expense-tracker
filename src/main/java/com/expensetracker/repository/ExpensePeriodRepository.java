@@ -10,5 +10,5 @@ import java.util.List;
 public interface ExpensePeriodRepository extends JpaRepository<ExpensePeriod, Integer> {
 
     public List<ExpensePeriod> getExpensePeriodsByNextPaymentIsNotNull();
-
+    
 }
