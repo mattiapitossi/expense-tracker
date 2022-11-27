@@ -49,7 +49,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
 
     @Override
     public void createExpenses(ExpensePeriod expensePeriod) {
-        while(!expensePeriod.getNextPayment().isAfter(LocalDate.now())) {
+        while (expensePeriod.getNextPayment() != null && !expensePeriod.getNextPayment().isAfter(LocalDate.now())) {
             expenseService.saveExpenseFromPeriod(expensePeriod);
 
             setExpenseNextPayment(expensePeriod);
@@ -58,28 +58,36 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
     }
 
     private void setExpenseNextPayment(ExpensePeriod expensePeriod) {
+        LocalDate nextPayment = null;
+
         switch (expensePeriod.getPeriodType()) {
             case "YEAR":
-                expensePeriod.setNextPayment(
-                        expensePeriod.getNextPayment().plusYears(expensePeriod.getPeriodDate())
-                );
+                nextPayment = expensePeriod.getNextPayment().plusYears(expensePeriod.getPeriodDate());
                 break;
             case "MONTH":
-                expensePeriod.setNextPayment(
-                        expensePeriod.getNextPayment().plusMonths(expensePeriod.getPeriodDate())
-                );
+                nextPayment = expensePeriod.getNextPayment().plusMonths(expensePeriod.getPeriodDate());
                 break;
             case "DAY":
-                expensePeriod.setNextPayment(
-                        expensePeriod.getNextPayment().plusDays(expensePeriod.getPeriodDate())
-                );
+                nextPayment = expensePeriod.getNextPayment().plusDays(expensePeriod.getPeriodDate());
                 break;
         }
+
+        if (expensePeriod.getEndDate() != null && expensePeriod.getEndDate().isBefore(nextPayment)) {
+            expensePeriod.setNextPayment(null);
+            return;
+        }
+
+        expensePeriod.setNextPayment(nextPayment);
     }
 
     @Override
     public List<ExpensePeriod> getAllExpensesPeriod() {
         return expensePeriodRepository.findAll();
+    }
+
+    @Override
+    public List<ExpensePeriod> getAllActiveExpensesPeriod() {
+        return expensePeriodRepository.getExpensePeriodsByNextPaymentIsNotNull();
     }
 
 
