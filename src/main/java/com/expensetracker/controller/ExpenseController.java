@@ -3,11 +3,12 @@ package com.expensetracker.controller;
 import com.expensetracker.model.Expense;
 import com.expensetracker.service.ExpenseService;
 import com.expensetracker.service.impl.ExpenseServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
