@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -58,6 +60,15 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     }
 
     @Override
+    public List<Expense> getAllExpensesPeriodByDate(int month, int year) {
+        LocalDate localDate = LocalDate.now().withMonth(month).withYear(year);
+        LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfMonth());
+
+        return expenseRepository.getExpenseByExpenseDateBetween(startDate, endDate);
+    }
+
+    @Override
     public void deleteExpenseById(Integer expenseId) {
         expenseRepository.deleteById(expenseId);
     }
@@ -70,7 +81,7 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         if (expense.getSubcategory().getName() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
-            Subcategory subcategory = subcategoryRepository.findByName(expense.getSubcategory().getName());
+            Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expense.getSubcategory().getName(), category);
             expense.setSubcategory(subcategory);
         }
 
@@ -91,7 +102,7 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         if (expense.getSubcategory().getName() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
-            Subcategory subcategory = subcategoryRepository.findByName(expense.getSubcategory().getName());
+            Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expense.getSubcategory().getName(), category);
             expense.setSubcategory(subcategory);
         }
 

@@ -25,6 +25,13 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenseService.getAllExpenses());
     }
 
+
+    @GetMapping("/expenses/date")
+    ResponseEntity<List<Expense>> getExpensesBetween(@RequestParam(name = "month") int month,
+                                                     @RequestParam(name = "year") int year) {
+        return ResponseEntity.ok().body(expenseService.getAllExpensesPeriodByDate(month, year));
+    }
+
     @DeleteMapping("/expenses/{id}")
     ResponseEntity<?> deleteExpense(@PathVariable Integer id) {
         expenseService.deleteExpenseById(id);

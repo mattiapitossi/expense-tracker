@@ -71,6 +71,14 @@
          </form>
       </div>
 
+      <!-- //DATE -->
+      <div class="py-4 d-flex justify-content-center">
+         <button class="btn-margin btn btn-success" @click="changeMonthAndYearvalue(-1)" v-html="leftArrow">
+         </button>
+         <h3>{{ getMonthName(time.month) }} {{time.year}}</h3>
+         <button class="btn-margin btn btn-success" @click="changeMonthAndYearvalue(+1)" v-html="rightArrow">
+         </button>
+      </div>
 
       <!-- //TABLE -->
       <div class="d-flex justify-content-center">
@@ -79,6 +87,7 @@
 
          <h2 v-else-if="expenses == null || expenses.length == 0">No expenses present. Add one!</h2>
 
+      
          <table v-else class="table">
             <thead>
                <tr>
@@ -144,6 +153,8 @@ export default {
          categories: null,
          wallets: null,
          subcategories: null,
+         rightArrow: "&gt",
+         leftArrow: "&lt",
          //form field ->
          data: {
             id: null,
@@ -156,6 +167,11 @@ export default {
             wallet: null,
             typeOfTransaction: "OUT"
          },
+         //Today year and date ->
+         time: {
+            month: Number(this.getTodayMonth()),
+            year: Number(this.getTodayYear())
+         }
       }
    },
 
@@ -249,7 +265,7 @@ export default {
 
          this.axios.post("api/expenses", this.data)
             .then(response => {
-               this.getExpenses()
+               this.getMonthExpenses()
                this.isLoadingForm = false
                this.animateModal(false);
             })
@@ -263,7 +279,7 @@ export default {
 
          this.axios.post("api/expenses/" + expenseId)
             .then(response => {
-               this.getExpenses();
+               this.getMonthExpenses();
                this.isLoading = false;
             })
             .catch(error => {
@@ -280,12 +296,21 @@ export default {
             });
       },
 
+      getMonthExpenses() {
+         this.isLoading = true;
+         this.axios.get("api/expenses/date?month=" + this.time.month + "&year=" + this.time.year)
+            .then(response => {
+               this.expenses = response.data;
+               this.isLoading = false;
+            });
+      },
+
       modifyExpense() {
          this.isLoadingForm = true;
 
          this.axios.put("api/expenses", this.data)
             .then(response => {
-               this.getExpenses();
+               this.getMonthExpenses();
                this.isLoadingForm = false;
                this.animateModal(false);
             })
@@ -297,7 +322,7 @@ export default {
       deleteExpense(expenseId) {
          this.axios.delete("api/expenses/" + expenseId)
             .then(response => {
-               this.getExpenses();
+               this.getMonthExpenses();
             })
             .catch(error => {
                console.log(error);
@@ -308,6 +333,35 @@ export default {
 
       getTodayDate() {
          return dayjs(Date.now()).format("YYYY-MM-DD");
+      },
+
+      getTodayMonth() {
+         return dayjs(Date.now()).format("MM");
+      },
+
+      getTodayYear() {
+         return dayjs(Date.now()).format("YYYY");
+      },
+      
+      getMonthName(monthNumber) {
+         const date = new Date();
+         date.setMonth(monthNumber - 1);
+
+         return date.toLocaleString('en-US', { month: 'long' });
+      },
+
+      changeMonthAndYearvalue(value) {
+         this.time.month += Number(value);
+
+         if(this.time.month === 0) {
+            this.time.year -= 1;
+            this.time.month = 12;
+         } else if(this.time.month === 13) {
+            this.time.year += 1;
+            this.time.month = 1;
+         }
+
+         this.getMonthExpenses();
       },
 
       fillFormFields(expense) {
@@ -424,12 +478,11 @@ export default {
                setTimeout(() => this.showModal = action, 400)
             }
          }
-      },
-
+      }
    },
 
    mounted() {
-      this.getExpenses();
+      this.getMonthExpenses();
    },
 }
 </script>
