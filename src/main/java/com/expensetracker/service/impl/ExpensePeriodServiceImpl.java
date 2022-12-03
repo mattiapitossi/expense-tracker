@@ -33,7 +33,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
         if (expensePeriod.getSubcategory().getName() == null) {
             expensePeriod.setSubcategory((Subcategory) null);
         } else {
-            Subcategory subcategory = subcategoryRepository.findByName(expensePeriod.getSubcategory().getName());
+            Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expensePeriod.getSubcategory().getName(), category);
             expensePeriod.setSubcategory(subcategory);
         }
 
@@ -96,7 +96,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
         if (expensePeriod.getSubcategory().getName() == null) {
             expensePeriod.setSubcategory((Subcategory) null);
         } else {
-            Subcategory subcategory = subcategoryRepository.findByName(expensePeriod.getSubcategory().getName());
+            Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expensePeriod.getSubcategory().getName(), category);
             expensePeriod.setSubcategory(subcategory);
         }
 

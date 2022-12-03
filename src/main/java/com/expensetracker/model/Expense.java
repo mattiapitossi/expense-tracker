@@ -23,7 +23,7 @@ public class Expense {
     private Integer id;
 
     @JsonProperty("expense_date")
-    @Column(name = "expense_date")
+    @Column(name = "expense_date") 
     private LocalDate expenseDate;
 
     @Column(name = "description")
