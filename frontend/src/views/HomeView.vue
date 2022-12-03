@@ -3,93 +3,82 @@
       <div class="py-5">
          <h1>HOME</h1>
       </div>
-      <div>
-         <Bar v-if="loaded" :chart-data="chartData" />
+      <div style="height:15vh; width:30vw">
+         <div class="py-1 d-flex">
+            <button class="btn-margin btn btn-success" @click="changeMonthAndYearvalue(-1); $refs.monthChart.updateChart(this.time.month, this.time.year)" v-html="leftArrow">
+            </button>
+            <h3>{{ getMonthName(time.month) }} {{time.year}}</h3>
+            <button class="btn-margin btn btn-success" @click="changeMonthAndYearvalue(1); $refs.monthChart.updateChart(this.time.month, this.time.year)" v-html="rightArrow">
+            </button>
+         </div>
+         <Chart ref="monthChart"/>
       </div>
    </main>
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+import Chart from "@/components/partials/Chart.vue";
 
 export default {
    name: "Home",
-    components: { Bar },
-    data() {
+   components: {Chart},
+
+   data() {
       return {
          chartData: {
-            labels: [],
+            labels: [ 'January', 'February', 'March'],
             datasets: [
                {
                   label: 'Data One',
                   backgroundColor: '#f87979',
-                  data: []
+                  data: [40, 20, 12]
                }
             ]
          },
-         expenses: null,
-         totalValue: [ ],
-         expensesdate: [ ],
+         //Today year and date ->
          time: {
-            month: Number(11),
+            month: Number(this.getTodayMonth()),
             year: Number(this.getTodayYear())
          },
-         loaded: false
+         rightArrow: "&gt",
+         leftArrow: "&lt",
       }
-    },
-    
-    methods: {
-      populateChart(labels, datasets) {
-         labels.forEach(label => {
-            this.chartData.labels.push(String(label));
-         });
-         datasets.forEach(data => {
-            this.chartData.datasets.at(-1).data.push(Number(data));
-         });
-         console.log(this.chartData.datasets.data);
-         console.log(this.chartData.labels);
-      },
+   },
 
-      getMonthExpenses() {
-        this.isLoading = true;
-        this.axios.get("api/expenses/date?month=" + this.time.month + "&year=" + this.time.year)
-            .then(response => {
-              this.expenses = response.data;
-              this.createChartValues(this.expenses);
-              this.isLoading = false;
-            });
-      },
+   methods: {
+      //UTILS
 
-      createChartValues(expenses) {
-         expenses.forEach((expense) => {
-         if(expense.typeOfTransaction === "OUT" || expense.typeOfTransaction === "OUTIN") {
-            if (this.totalValue.length === 0) {
-               this.totalValue.push(expense.value);
-            } else {
-               this.totalValue.push(Number(this.totalValue.at(-1)) + Number(expense.value));
-            }
-               this.expensesdate.push(expense.expense_date);
-         }
-         });
-
-         this.populateChart(this.expensesdate, this.totalValue, this.expensesdate);
-         this.loaded = true;
+      getTodayDate() {
+         return dayjs(Date.now()).format("YYYY-MM-DD");
       },
 
       getTodayMonth() {
-        return dayjs(Date.now()).format("MM");
+         return dayjs(Date.now()).format("MM");
       },
 
       getTodayYear() {
-        return dayjs(Date.now()).format("YYYY");
+         return dayjs(Date.now()).format("YYYY");
       },
-    },
+      
+      getMonthName(monthNumber) {
+         const date = new Date();
+         date.setMonth(monthNumber - 1);
 
-   mounted() {
-      this.getMonthExpenses();
-   }
+         return date.toLocaleString('en-US', { month: 'long' });
+      },
+      
+      changeMonthAndYearvalue(value) {
+         this.time.month += Number(value);
+
+         if(this.time.month === 0) {
+            this.time.year -= 1;
+            this.time.month = 12;
+         } else if(this.time.month === 13) {
+            this.time.year += 1;
+            this.time.month = 1;
+         }
+      },
+   }     
 }
+
 </script>
