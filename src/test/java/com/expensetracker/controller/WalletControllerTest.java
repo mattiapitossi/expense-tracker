@@ -40,7 +40,7 @@ class WalletControllerTest {
 
     @Test
     void createWallet() throws Exception {
-        Wallet wallet = new Wallet(1L, "Mock Wallet", new BigDecimal(1000.0));
+        Wallet wallet = new Wallet(1L, "Mock Wallet", new BigDecimal("1000.0"));
         Mockito.when(walletService.createWallet(wallet)).thenReturn(wallet);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/wallets")
@@ -57,7 +57,7 @@ class WalletControllerTest {
 
     @Test
     void updateWallet() throws Exception {
-        Wallet wallet = new Wallet(10L, "Mock Wallet", new BigDecimal(104.0));
+        Wallet wallet = new Wallet(10L, "Mock Wallet", new BigDecimal("104.0"));
         Mockito.when(walletService.updateWallet(wallet)).thenReturn(wallet);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/wallets")
