@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,7 +40,7 @@ class WalletControllerTest {
 
     @Test
     void createWallet() throws Exception {
-        Wallet wallet = new Wallet(1, "Mock Wallet", 1000.0);
+        Wallet wallet = new Wallet(1L, "Mock Wallet", new BigDecimal(1000.0));
         Mockito.when(walletService.createWallet(wallet)).thenReturn(wallet);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/wallets")
@@ -56,7 +57,7 @@ class WalletControllerTest {
 
     @Test
     void updateWallet() throws Exception {
-        Wallet wallet = new Wallet(10, "Mock Wallet", 104.0);
+        Wallet wallet = new Wallet(10L, "Mock Wallet", new BigDecimal(104.0));
         Mockito.when(walletService.updateWallet(wallet)).thenReturn(wallet);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/wallets")
@@ -69,10 +70,10 @@ class WalletControllerTest {
 
     @Test
     void deleteCategory() throws Exception {
-        Mockito.doNothing().when(walletService).deleteById(Mockito.anyInt());
+        Mockito.doNothing().when(walletService).deleteById(Mockito.anyLong());
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/wallets/1")).andExpect(status().isOk());
 
-        Mockito.verify(walletService, Mockito.times(1)).deleteById(Mockito.anyInt());
+        Mockito.verify(walletService, Mockito.times(1)).deleteById(Mockito.anyLong());
     }
 }
