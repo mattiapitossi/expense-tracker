@@ -38,7 +38,7 @@ public class SubcategoryService {
         return subcategoryRepository.save(oldSubcategory);
     }
 
-    public void deleteById(Integer subcategoryId) {
+    public void deleteById(Long subcategoryId) {
         subcategoryRepository.deleteById(subcategoryId);
     }
 }

@@ -9,11 +9,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
+public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    boolean existsByCategory_Id(Integer id);
+    boolean existsByCategory_Id(Long id);
 
-    boolean existsByWallet_Id(Integer id);
+    boolean existsByWallet_Id(Long id);
 
     List<Expense> getExpenseByWallet(Wallet wallet);
 

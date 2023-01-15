@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> findCategoryById(Integer id) {
+    public Optional<Category> findCategoryById(Long id) {
         return categoryRepository.findById(id);
     }
 
@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteById(Integer categoryId) {
+    public void deleteById(Long categoryId) {
         if(!expenseService.expenseWithCategoryExist(categoryId)) {
             categoryRepository.deleteById(categoryId);
         } else {

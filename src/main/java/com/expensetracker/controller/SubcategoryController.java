@@ -37,7 +37,7 @@ public class SubcategoryController {
     }
 
     @DeleteMapping("/subcategory/{id}")
-    ResponseEntity<Subcategory> deleteCategory(@PathVariable(name = "id") Integer subcategoryId) {
+    ResponseEntity<Subcategory> deleteCategory(@PathVariable(name = "id") Long subcategoryId) {
         subcategoryService.deleteById(subcategoryId);
         return ResponseEntity.ok().build();
     }
