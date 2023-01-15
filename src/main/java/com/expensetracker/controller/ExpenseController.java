@@ -1,8 +1,8 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.model.Expense;
+import com.expensetracker.model.YearExpensesDTO;
 import com.expensetracker.service.ExpenseService;
-import com.expensetracker.service.impl.ExpenseServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +31,12 @@ public class ExpenseController {
     ResponseEntity<List<Expense>> getExpensesBetween(@RequestParam(name = "month") int month,
                                                      @RequestParam(name = "year") int year) {
         return ResponseEntity.ok().body(expenseService.getAllExpensesPeriodByDate(month, year));
+    }
+
+
+    @GetMapping("/expenses/{year}")
+    ResponseEntity<List<YearExpensesDTO>> getExpensesBetween(@PathVariable(name = "year") int year) {
+        return ResponseEntity.ok().body(expenseService.getAllExpensesByYear(year));
     }
 
     @DeleteMapping("/expenses/{id}")

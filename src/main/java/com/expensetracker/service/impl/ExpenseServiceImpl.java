@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -66,6 +67,16 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfMonth());
 
         return expenseRepository.getExpenseByExpenseDateBetween(startDate, endDate);
+    }
+
+    @Override
+    public List<YearExpensesDTO> getAllExpensesByYear(int year) {
+        LocalDate localDate = LocalDate.now().withYear(year);
+        LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfYear());
+        LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfYear());
+
+        System.out.println(expenseRepository.getExpensesByYear(startDate, endDate));
+        return expenseRepository.getExpensesByYear(startDate, endDate);
     }
 
     @Override
