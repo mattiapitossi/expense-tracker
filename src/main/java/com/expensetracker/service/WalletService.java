@@ -6,6 +6,7 @@ import com.expensetracker.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class WalletService {
         return walletRepository.save(wallet);
     }
 
-    public void deleteById(Integer walletId) {
+    public void deleteById(Long walletId) {
         if(!expenseService.expenseWithWalletExist(walletId)) {
             walletRepository.deleteById(walletId);
         } else {
@@ -36,8 +37,8 @@ public class WalletService {
         }
     }
 
-    public Double getValue(Wallet wallet) {
-        double value = wallet.getValue();
+    public BigDecimal getValue(Wallet wallet) {
+        BigDecimal value = wallet.getValue();
         if(expenseService.expenseWithWalletExist(wallet.getId())) {
             List<Expense> expensesList = expenseService.expensesLinkedToWallet(wallet);
 
@@ -45,10 +46,10 @@ public class WalletService {
                 switch(expense.getTypeOfTransaction()) {
                     //TODO: INOUT and OUTIN
                     case "IN":
-                        value += expense.getValue();
+                        value = value.add(expense.getValue());
                         break;
                     case "OUT":
-                        value -= expense.getValue();
+                        value = value.subtract(expense.getValue());
                     default:
                         break;
                 }

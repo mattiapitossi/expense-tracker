@@ -29,12 +29,12 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     private final ExpenseMapper expenseMapper;
 
     @Override
-    public boolean expenseWithCategoryExist(Integer categoryId) {
+    public boolean expenseWithCategoryExist(Long categoryId) {
         return expenseRepository.existsByCategory_Id(categoryId);
     }
 
     @Override
-    public boolean expenseWithWalletExist(Integer walletId) {
+    public boolean expenseWithWalletExist(Long walletId) {
         return expenseRepository.existsByWallet_Id(walletId);
     }
 
@@ -44,7 +44,7 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     }
 
     @Override
-    public Expense duplicateExpense(Integer expenseId) {
+    public Expense duplicateExpense(Long expenseId) {
         Expense oldExpense = expenseRepository.findById(expenseId).get();
         Expense newExpense = new Expense();
         BeanUtils.copyProperties(oldExpense, newExpense);
@@ -69,7 +69,7 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     }
 
     @Override
-    public void deleteExpenseById(Integer expenseId) {
+    public void deleteExpenseById(Long expenseId) {
         expenseRepository.deleteById(expenseId);
     }
 

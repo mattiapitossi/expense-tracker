@@ -111,7 +111,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
 
 
     @Override
-    public ExpensePeriod duplicateExpensePeriod(Integer expenseId) {
+    public ExpensePeriod duplicateExpensePeriod(Long expenseId) {
         ExpensePeriod oldExpense = expensePeriodRepository.findById(expenseId).get();
         ExpensePeriod newExpense = new ExpensePeriod();
         BeanUtils.copyProperties(oldExpense, newExpense);
@@ -122,7 +122,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
     }
 
     @Override
-    public void deleteExpensePeriodById(Integer expenseId) {
+    public void deleteExpensePeriodById(Long expenseId) {
         expensePeriodRepository.deleteById(expenseId);
     }
 }

@@ -8,13 +8,13 @@ import java.util.Optional;
 public interface CategoryService {
     List<Category> getAllCategories();
 
-    Optional<Category> findCategoryById(Integer id);
+    Optional<Category> findCategoryById(Long id);
 
     Category createNewCategory(Category category);
 
     Category modifyCategory(Category category);
 
-    void deleteById(Integer categoryId);
+    void deleteById(Long categoryId);
 
     Category findByName(String name);
 }

@@ -7,19 +7,19 @@ import com.expensetracker.model.Wallet;
 import java.util.List;
 
 public interface ExpenseService {
-    boolean expenseWithCategoryExist(Integer categoryId);
+    boolean expenseWithCategoryExist(Long categoryId);
 
-    boolean expenseWithWalletExist(Integer walletId);
+    boolean expenseWithWalletExist(Long walletId);
 
     List<Expense> expensesLinkedToWallet(Wallet wallet);
 
-    Expense duplicateExpense(Integer expenseId);
+    Expense duplicateExpense(Long expenseId);
 
     List<Expense> getAllExpenses();
 
     List<Expense> getAllExpensesPeriodByDate(int month, int year);
 
-    void deleteExpenseById(Integer expenseId);
+    void deleteExpenseById(Long expenseId);
 
     Expense createNewExpense(Expense expense);
 

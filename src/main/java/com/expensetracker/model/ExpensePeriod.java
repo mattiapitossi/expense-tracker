@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class ExpensePeriod {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @JsonProperty("period_start_date")
     @Column(name = "start_date")
@@ -53,7 +55,7 @@ public class ExpensePeriod {
     private String typeOfTransaction;
 
     @Column(name = "value")
-    private Double value;
+    private BigDecimal value;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
