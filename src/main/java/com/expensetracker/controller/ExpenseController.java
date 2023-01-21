@@ -5,18 +5,20 @@ import com.expensetracker.model.YearExpensesDTO;
 import com.expensetracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Validated
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -28,13 +30,13 @@ public class ExpenseController {
 
 
     @GetMapping("/expenses/date")
-    ResponseEntity<List<Expense>> getExpensesBetween(@RequestParam(name = "month") int month,
-                                                     @RequestParam(name = "year") int year) {
+    ResponseEntity<List<Expense>> getExpensesBetween(@RequestParam(name = "month") @Range(min = 1, max = 12) int month,
+                                                     @RequestParam(name = "year") @Range(min = 2020, max = 2099) int year) {
         return ResponseEntity.ok().body(expenseService.getAllExpensesPeriodByDate(month, year));
     }
 
 
-    @GetMapping("/expenses/{year}")
+    @GetMapping("/expenses/{year:^20[2-9]\\d$}")
     ResponseEntity<List<YearExpensesDTO>> getExpensesBetween(@PathVariable(name = "year") int year) {
         return ResponseEntity.ok().body(expenseService.getAllExpensesByYear(year));
     }
