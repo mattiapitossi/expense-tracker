@@ -75,7 +75,6 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfYear());
         LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfYear());
 
-        System.out.println(expenseRepository.getExpensesByYear(startDate, endDate));
         return expenseRepository.getExpensesByYear(startDate, endDate);
     }
 
@@ -119,8 +118,6 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
 
         expense.setCategory(category);
         expense.setWallet(wallet);
-        System.out.println(expense.getCategory());
-        System.out.println(expense.getWallet());
         BeanUtils.copyProperties(expense, oldExpense);
 
         return expenseRepository.save(oldExpense);

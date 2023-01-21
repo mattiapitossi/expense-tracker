@@ -102,8 +102,6 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
 
         expensePeriod.setCategory(category);
         expensePeriod.setWallet(wallet);
-        System.out.println(expensePeriod.getCategory());
-        System.out.println(expensePeriod.getWallet());
         BeanUtils.copyProperties(expensePeriod, oldExpense);
 
         return expensePeriodRepository.save(oldExpense);
