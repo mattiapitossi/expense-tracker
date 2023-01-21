@@ -77,7 +77,7 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         expense.setCategory(category);
 
-        if (expense.getSubcategory() == null || expense.getSubcategory().getName() == null) {
+        if (expense.getSubcategory() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
             Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expense.getSubcategory().getName(), category);
@@ -98,7 +98,7 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         Category category = categoryRepository.findByName(expense.getCategory().getName());
         Wallet wallet = walletRepository.findByName(expense.getWallet().getName());
 
-        if (expense.getSubcategory() == null || expense.getSubcategory().getName() == null) {
+        if (expense.getSubcategory() == null) {
             expense.setSubcategory((Subcategory) null);
         } else {
             Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expense.getSubcategory().getName(), category);

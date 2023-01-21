@@ -93,7 +93,7 @@ public class ExpensePeriodServiceImpl implements ExpensePeriodService {
         Category category = categoryRepository.findByName(expensePeriod.getCategory().getName());
         Wallet wallet = walletRepository.findByName(expensePeriod.getWallet().getName());
 
-        if (expensePeriod.getSubcategory().getName() == null) {
+        if (expensePeriod.getSubcategory() == null) {
             expensePeriod.setSubcategory((Subcategory) null);
         } else {
             Subcategory subcategory = subcategoryRepository.findByNameAndCategory(expensePeriod.getSubcategory().getName(), category);
