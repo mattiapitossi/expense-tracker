@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface ExpenseService {
-    boolean expenseWithCategoryExist(Integer categoryId);
+    boolean expenseWithCategoryExist(Long categoryId);
 
-    boolean expenseWithWalletExist(Integer walletId);
+    boolean expenseWithWalletExist(Long walletId);
 
     List<Expense> expensesLinkedToWallet(Wallet wallet);
 
-    Expense duplicateExpense(Integer expenseId);
+    Expense duplicateExpense(Long expenseId);
 
     List<Expense> getAllExpenses();
 
@@ -23,7 +23,7 @@ public interface ExpenseService {
 
     List<YearExpensesDTO> getAllExpensesByYear(int year);
 
-    void deleteExpenseById(Integer expenseId);
+    void deleteExpenseById(Long expenseId);
 
     Expense createNewExpense(Expense expense);
 

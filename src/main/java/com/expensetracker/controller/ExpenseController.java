@@ -40,7 +40,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/expenses/{id}")
-    ResponseEntity<?> deleteExpense(@PathVariable Integer id) {
+    ResponseEntity<?> deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpenseById(id);
 
         return ResponseEntity.ok().build();
@@ -53,7 +53,7 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses/{id}")
-    ResponseEntity<Expense> duplicateExpense(@PathVariable(name = "id") Integer expenseId) throws URISyntaxException {
+    ResponseEntity<Expense> duplicateExpense(@PathVariable(name = "id") Long expenseId) throws URISyntaxException {
         Expense result = expenseService.duplicateExpense(expenseId);
         return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
     }

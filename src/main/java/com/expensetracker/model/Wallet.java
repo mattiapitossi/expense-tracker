@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,11 +20,11 @@ public class Wallet {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "value")
-    private Double value;
+    private BigDecimal value;
 }

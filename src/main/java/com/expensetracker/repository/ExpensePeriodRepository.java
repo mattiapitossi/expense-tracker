@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ExpensePeriodRepository extends JpaRepository<ExpensePeriod, Integer> {
+public interface ExpensePeriodRepository extends JpaRepository<ExpensePeriod, Long> {
 
     public List<ExpensePeriod> getExpensePeriodsByNextPaymentIsNotNull();
     

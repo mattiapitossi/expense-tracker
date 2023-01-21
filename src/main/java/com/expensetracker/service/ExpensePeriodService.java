@@ -16,7 +16,7 @@ public interface ExpensePeriodService {
 
     ExpensePeriod modifyExpensePeriod(ExpensePeriod expensePeriod);
 
-    ExpensePeriod duplicateExpensePeriod(Integer expenseId);
+    ExpensePeriod duplicateExpensePeriod(Long expenseId);
 
-    void deleteExpensePeriodById(Integer expenseId);
+    void deleteExpensePeriodById(Long expenseId);
 }

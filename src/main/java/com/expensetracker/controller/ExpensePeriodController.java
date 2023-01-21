@@ -25,7 +25,7 @@ public class ExpensePeriodController {
     }
 
     @DeleteMapping("/period/{id}")
-    ResponseEntity<?> deleteExpense(@PathVariable Integer id) {
+    ResponseEntity<?> deleteExpense(@PathVariable Long id) {
         expensePeriodService.deleteExpensePeriodById(id);
 
         return ResponseEntity.ok().build();
@@ -38,7 +38,7 @@ public class ExpensePeriodController {
     }
 
     @PostMapping("/period/{id}")
-    ResponseEntity<ExpensePeriod> duplicateExpense(@PathVariable(name = "id") Integer expenseId) throws URISyntaxException {
+    ResponseEntity<ExpensePeriod> duplicateExpense(@PathVariable(name = "id") Long expenseId) throws URISyntaxException {
         ExpensePeriod result = expensePeriodService.duplicateExpensePeriod(expenseId);
         return ResponseEntity.created(new URI("/api/expense/period" + result.getId())).body(result);
     }
