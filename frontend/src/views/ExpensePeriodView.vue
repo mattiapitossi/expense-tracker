@@ -1,246 +1,243 @@
 <template>
   <main class="container">
-    <div class="d-flex justify-content-between py-5">
-      <h1>EXPENSES PERIOD</h1>
-      <button
-        class="btn btn-success"
-        @click="
-          animateModal(true), getCategories(), getSubcategories(), getWallets()
-        "
-      >
-        ADD EXPENSE PERIOD
-      </button>
-    </div>
-
-    <!-- //MODAL// -->
-    <div
-      class="back_overlay"
-      @click="animateModal(false)"
-      v-show="showModal"
-    ></div>
-    <!-- //OVERLAY -->
-
-    <!-- //TODO CLOSE BUTTON -->
-    <div v-show="showModal" class="pop_up_form">
-      <Loading v-if="isLoadingForm" />
-
-      <form v-else @submit.prevent="modify ? modifyExpensePeriod() : addExpensePeriod()">
-  <div class="mb-3">
-          <label for="period_start_date" class="form-label">Start Date</label>
-          <input
-            type="date"
-            class="form-control"
-            id="period_start_date"
-            name="period_start_date"
-            v-model="data.period_start_date"
-          />
-        </div>
-  <div class="mb-3">
-          <label for="period_end_date" class="form-label">End Date</label>
-          <input
-            type="date"
-            class="form-control"
-            id="period_end_date"
-            name="period_end_date"
-            v-model="data.period_end_date"
-          />
-        </div>
-        <div class="mb-3 me-3 d-inline-block">
-          <label for="period_type" class="form-label d-block"
-            >Period type</label
-          >
-          <select
-            name="period_type"
-            id="period_type"
-            v-model="data.period_type"
-          >
-            <option value="YEAR">YEAR</option>
-            <option value="MONTH">MONTH</option>
-            <option value="DAY" selected>DAY</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="value" class="form-label">Period Date</label>
-          <input
-            type="number"
-            class="form-control"
-            id="period_date"
-            name="period_date"
-            v-model="data.period_date"
-          />
-        </div>
-
-        <div class="mb-3 me-3 d-inline-block">
-          <label for="category" class="form-label d-block">Category</label>
-          <RouterLink
-            v-if="categories == null || categories.length == 0"
-            class="fs-4 text-black"
-            :to="{ name: 'categories' }"
-            >&plus;</RouterLink
-          >
-
-          <select v-else name="category" id="category" v-model="data.category">
-            <option v-for="item in categories" :key="item.id" :value="item.name">
-              {{ item.name }}
-            </option>
-          </select>
-        </div>
-        <div class="mb-3 me-3 d-inline-block">
-          <label for="subcategory" class="form-label d-block">Subcategory</label>
-          <RouterLink
-            v-if="subcategories == null || subcategories.length == 0"
-            class="fs-4 text-black"
-            :to="{ name: 'categories' }"
-            >&plus;</RouterLink
-          >
-          <select
-            v-else
-            name="subcategory"
-            id="subcategory"
-            v-model="data.subcategory"
-          >
-            <option
-              v-for="item in subcategories"
-              :key="item.id"
-              :value="item.name"
-            >
-              {{ item.name }}
-            </option>
-          </select>
-        </div>
-        <div class="mb-3 me-3 d-inline-block">
-          <label for="wallet" class="form-label d-block">Wallet</label>
-          <RouterLink
-            v-if="wallets == null || wallets.length == 0"
-            class="fs-4 text-black"
-            :to="{ name: 'wallets' }"
-            >&plus;</RouterLink
-          >
-          <select v-else name="wallet" id="wallet" v-model="data.wallet">
-            <option v-for="item in wallets" :key="item.id" :value="item.name">
-              {{ item.name }}
-            </option>
-          </select>
-        </div>
-        <div class="mb-3 me-3 d-inline-block">
-          <label for="type_of_transaction" class="form-label d-block"
-            >Transaction type</label
-          >
-          <select
-            name="type_of_transaction"
-            id="type_of_transaction"
-            v-model="data.typeOfTransaction"
-          >
-            <option value="OUT" selected>OUT</option>
-            <option value="IN">IN</option>
-            <option value="INOUT">INOUT</option>
-            <option value="OUTIN">OUTIN</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="value" class="form-label">Value</label>
-          <input
-            type="number"
-            class="form-control"
-            id="value"
-            name="value"
-            v-model="data.value"
-            step="0.01"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <textarea
-            class="form-control"
-            id="description"
-            name="description"
-            v-model="data.description"
-            placeholder="Description..."
-          ></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="location" class="form-label">Location</label>
-          <input
-            type="text"
-            class="form-control"
-            id="location"
-            name="location"
-            v-model="data.location"
-            placeholder="Location"
-          />
-        </div>
-        <div class="py-3 d-flex justify-content-center">
-          <button
-            :disabled="
-              (categories == null || categories.length == 0) &&
-              (subcategories == null || subcategories.length == 0)
-            "
-            type="submit"
-            class="btn btn-primary d-block"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
-
-      <!-- //TABLE -->
-      <div class="d-flex justify-content-center">
-
-         <Loading v-if="isLoading" />
-
-         <h2 v-else-if="expensesPeriod == null || expensesPeriod.length == 0">No expenses period present. Add one!</h2>
-
-         <table v-else class="table">
-            <thead>
-               <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Start date</th>
-                  <th scope="col">Next Payment date</th>
-                  <th scope="col">Last Date</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Trasaction type</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Value</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Subcategory</th>
-                  <th scope="col">Wallet</th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr v-for="expensePeriod in expensesPeriod" :key="expensePeriod.id">
-                  <th scope="row">{{ expensePeriod.id }}</th>
-                  <td>{{ expensePeriod.period_start_date }}</td>
-                  <td>{{ expensePeriod.period_next_payment != null ? expensePeriod.period_next_payment : "Recurring payment ended"}}</td>
-                  <td>{{ expensePeriod.period_end_date  != null ? expensePeriod.period_end_date : null}}</td>
-                  <td>{{ expensePeriod.period_date}}</td>
-                  <td>{{ expensePeriod.period_type}}</td>
-                  <td>{{ expensePeriod.description}}</td>
-                  <td>{{ expensePeriod.typeOfTransaction}}</td>
-                  <td>{{ expensePeriod.location}}</td>
-                  <td>{{ expensePeriod.value}} €</td>
-                  <td>{{ expensePeriod.category.name}}</td>
-                  <td>{{ expensePeriod.subcategory != null ? expensePeriod.subcategory.name : null}}</td>
-                  <td>{{ expensePeriod.wallet.name }}</td>
-                  <td>
-                     <button @click="animateModal(true), fillFormFields(expensePeriod)" class="btn btn-primary mx-2">
-                        <i class="fa-solid fa-pen"></i>
-                     </button>
-                     <button @click="!isLoading ? duplicateExpensePeriod(expensePeriod.id) : null" class="btn btn-success mx-2">
-                        <i class="fa-regular fa-clone"></i>
-                     </button>
-                     <button @click="deleteExpensePeriod(expensePeriod.id)" class="btn btn-danger mx-2">
-                        <i class="fa-solid fa-trash"></i>
-                     </button>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-
+    <div class="tableContainer tableShadow">
+      <div class="d-flex justify-content-between py-3">
+        <h1>EXPENSES PERIOD</h1>
+        <button
+          class="btn btn-success"
+          @click="
+            animateModal(true), getCategories(), getWallets()
+          "
+        >
+          ADD EXPENSE PERIOD
+        </button>
       </div>
 
+      <!-- //MODAL// -->
+      <div
+        class="back_overlay"
+        @click="animateModal(false)"
+        v-show="showModal"
+      ></div>
+      <!-- //OVERLAY -->
+
+      <!-- //TODO CLOSE BUTTON -->
+      <div v-show="showModal" class="pop_up_form">
+        <Loading v-if="isLoadingForm" />
+
+        <form v-else @submit.prevent="modify ? modifyExpensePeriod() : addExpensePeriod()">
+          <div class="mb-3">
+            <label for="value" class="form-label">Value</label>
+            <input
+              type="number"
+              class="form-control"
+              id="value"
+              name="value"
+              v-model="data.value"
+              placeholder="0.01" 
+              step="0.01"
+              min="0.01"
+            />
+          </div>
+          <div class="mb-3 me-3 d-inline-block">
+            <label for="category" class="form-label d-block">Category</label>
+            <RouterLink
+              v-if="categories == null || categories.length == 0"
+              class="fs-4 text-black"
+              :to="{ name: 'categories' }"
+              >&plus;</RouterLink
+            >
+            <select v-else name="category" id="category" v-model="data.category" class="halfSizeSelectOption" @change="getSubcategoriesFromCategory()">
+              <option v-for="item in categories" :key="item.id" :value="item.name">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3 me-3 d-inline-block">
+            <label for="subcategory" class="form-label d-block">Subcategory</label>
+            <RouterLink
+              v-if="subcategories == null || subcategories.length == 0"
+              class="fs-4 text-black"
+              :to="{ name: 'categories' }"
+              >&plus;</RouterLink
+            >
+            <select
+              v-else
+              name="subcategory"
+              id="subcategory"
+              v-model="data.subcategory"
+              class="halfSizeSelectOption"
+              >
+              <option
+                v-for="item in subcategories"
+                :key="item.id"
+                :value="item.name"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3 me-3 d-inline-block">
+            <label for="wallet" class="form-label d-block">Wallet</label>
+            <RouterLink
+              v-if="wallets == null || wallets.length == 0"
+              class="fs-4 text-black"
+              :to="{ name: 'wallets' }"
+              >&plus;</RouterLink
+            >
+            <select v-else name="wallet" id="wallet" v-model="data.wallet" class="halfSizeSelectOption">
+              <option v-for="item in wallets" :key="item.id" :value="item.name">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3 me-3 d-inline-block">
+            <label for="type_of_transaction" class="form-label d-block"
+              >Transaction type</label
+            >
+            <select
+              name="type_of_transaction"
+              id="type_of_transaction"
+              v-model="data.typeOfTransaction"
+              class="halfSizeSelectOption"
+            >
+              <option value="OUT" selected>OUT</option>
+              <option value="IN">IN</option>
+            </select>
+          </div>
+    <div class="mb-3">
+            <label for="period_start_date" class="form-label">Start Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="period_start_date"
+              name="period_start_date"
+              v-model="data.period_start_date"
+            />
+          </div>
+    <div class="mb-3">
+            <label for="period_end_date" class="form-label">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="period_end_date"
+              name="period_end_date"
+              v-model="data.period_end_date"
+            />
+          </div>
+          <div class="mb-3 me-3 d-inline-block">
+            <label for="period_type" class="form-label d-block"
+              >Period type</label
+            >
+            <select
+              name="period_type"
+              id="period_type"
+              v-model="data.period_type"
+              class="halfSizeSelectOption"
+            >
+              <option value="YEAR">YEAR</option>
+              <option value="MONTH">MONTH</option>
+              <option value="DAY" selected>DAY</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="value" class="form-label">Period Date</label>
+            <input
+              type="number"
+              class="form-control"
+              id="period_date"
+              name="period_date"
+              v-model="data.period_date"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              v-model="data.description"
+              placeholder="Description..."
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              name="location"
+              v-model="data.location"
+              placeholder="Location"
+            />
+          </div>
+          <div class="py-3 d-flex justify-content-center">
+            <button
+              :disabled="
+                (categories == null || categories.length == 0) &&
+                (subcategories == null || subcategories.length == 0)
+              "
+              type="submit"
+              class="btn btn-primary d-block"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+        <!-- //TABLE -->
+        <div class="d-flex justify-content-center">
+
+          <Loading v-if="isLoading" />
+
+          <h2 v-else-if="expensesPeriod == null || expensesPeriod.length == 0">No expenses period present. Add one!</h2>
+
+          <table v-else class="table">
+              <thead>
+                <tr>
+                    <th scope="col" class="d-none">#</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">Next Payment date</th>
+                    <th scope="col">Last Date</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Subcategory</th>
+                    <th scope="col">Wallet</th>
+                    <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="expensePeriod in expensesPeriod" :key="expensePeriod.id">
+                    <th scope="row" class="d-none">{{ expensePeriod.id }}</th>
+                    <td>{{ expensePeriod.period_start_date }}</td>
+                    <td>{{ expensePeriod.period_next_payment != null ? expensePeriod.period_next_payment : "Recurring payment ended"}}</td>
+                    <td>{{ expensePeriod.period_end_date  != null ? expensePeriod.period_end_date : null}}</td>
+                    <td>{{ expensePeriod.period_date}}</td>
+                    <td>{{ expensePeriod.period_type}}</td>
+                    <td v-if="expensePeriod.typeOfTransaction === 'IN'" class="positiveExpense">{{ expensePeriod.value}} €</td>
+                    <td v-else-if="expensePeriod.typeOfTransaction === 'OUT'" class="negativeExpense">{{ expensePeriod.value}} €</td>
+                    <td>{{ expensePeriod.category.name}}</td>
+                    <td>{{ expensePeriod.subcategory != null ? expensePeriod.subcategory.name : null}}</td>
+                    <td>{{ expensePeriod.wallet.name }}</td>
+                    <td>
+                      <button @click="animateModal(true), fillFormFields(expensePeriod)" class="btn btn-primary mx-2">
+                          <i class="fa-solid fa-pen"></i>
+                      </button>
+                      <button @click="!isLoading ? duplicateExpensePeriod(expensePeriod.id) : null" class="btn btn-success mx-2">
+                          <i class="fa-regular fa-clone"></i>
+                      </button>
+                      <button @click="deleteExpensePeriod(expensePeriod.id)" class="btn btn-danger mx-2">
+                          <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
    </main>
 </template>
 
@@ -291,6 +288,9 @@ export default {
           this.categories = response.data;
           if (this.categories != 0) {
             this.data.category = this.categories[0].name;
+            this.getSubcategoriesFromCategory();
+          } else {
+            this.getSubcategories();
           }
           this.isLoadingForm = false;
         })
@@ -334,6 +334,18 @@ export default {
             .catch(error => {
                console.log(error);
             })
+      },
+
+      getSubcategoriesFromCategory() {
+            this.isLoadingForm = true;
+            this.axios.get("api/subcategory/" + this.data.category)
+              .then(response => {
+                  this.subcategories = response.data;
+                  if (this.subcategories != 0) {
+                  this.data.subcategory = this.subcategories[0].name;
+              }
+                  this.isLoadingForm = false;
+              });
       },
 
     getWallets() {

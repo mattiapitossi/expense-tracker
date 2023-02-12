@@ -14,6 +14,7 @@
 body {
    color: $gray;
    font-family: $font_stack;
+   background-color: rgb(235, 235, 235);
    // font-family: $font_stack2;
    // background-image: linear-gradient(#072142, #020B16);
 }
@@ -26,7 +27,6 @@ a:hover {
 }
 
 main {
-   margin-top: 64px;
    min-height: calc(100vh - 64px);
 }
 

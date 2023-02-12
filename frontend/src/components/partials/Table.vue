@@ -2,7 +2,7 @@
    <table class="table">
       <thead>
          <tr>
-            <th scope="col">#</th>
+            <th scope="col" class="d-none">#</th>
             <th scope="col">Name</th>
             <th v-if="(categories.length > 0) && (categories[0].hasOwnProperty('category'))" scope="col">Category</th>
             <th scope="col">Actions</th>
@@ -10,7 +10,7 @@
       </thead>
       <tbody>
          <tr v-for="category in categories" :key="category.id">
-            <th scope="row">{{ category.id }}</th>
+            <th scope="row" class="d-none">{{ category.id }}</th>
             <td>{{ category.name }}</td>
             <td v-if="category.hasOwnProperty('category')">{{ category.category.name }}</td>
             <td>
@@ -58,7 +58,3 @@ export default {
    }
 }
 </script>
-
-<style>
-
-</style>

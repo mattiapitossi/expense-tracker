@@ -1,5 +1,7 @@
 package com.expensetracker.service.impl;
 
+import com.expensetracker.model.dto.CategoryExpensesDTO;
+import com.expensetracker.model.dto.YearExpensesDTO;
 import com.expensetracker.mapper.ExpenseMapper;
 import com.expensetracker.model.*;
 import com.expensetracker.repository.CategoryRepository;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -76,6 +77,15 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfYear());
 
         return expenseRepository.getExpensesByYear(startDate, endDate);
+    }
+
+    @Override
+    public List<CategoryExpensesDTO> getCategoriesExpensesByMonth(int month, int year) {
+        LocalDate localDate = LocalDate.now().withMonth(month).withYear(year);
+        LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfMonth());
+
+        return expenseRepository.getCategoryExpensesByMonth(startDate, endDate);
     }
 
     @Override

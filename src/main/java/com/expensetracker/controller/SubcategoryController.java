@@ -24,6 +24,11 @@ public class SubcategoryController {
         return ResponseEntity.ok().body(subcategoryService.getAllSubcategories());
     }
 
+    @GetMapping("/subcategory/{id}")
+    ResponseEntity<List<Subcategory>> readSubcategoriesFromCategoryName(@PathVariable(name = "id") String categoryName) {
+        return ResponseEntity.ok().body(subcategoryService.getAllSubcategoriesFromCategoryName(categoryName));
+    }
+
     @PostMapping("/subcategory")
     ResponseEntity<Subcategory> createSubcategory(@Valid @RequestBody Subcategory subcategory) throws URISyntaxException {
         Subcategory res = subcategoryService.createNewSubcategory(subcategory);

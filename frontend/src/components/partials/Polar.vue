@@ -1,6 +1,6 @@
 <template>
-    <main class="container" style="margin-top: 10px;">
-        <div style="height:10vh; width:20vw">
+    <main class="container chartContainer">
+        <div class="chartDimensions">
             <PolarArea :chart-data="data" :options="options" />
         </div>
     </main>

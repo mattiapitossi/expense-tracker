@@ -1,7 +1,8 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.model.Expense;
-import com.expensetracker.model.YearExpensesDTO;
+import com.expensetracker.model.dto.CategoryExpensesDTO;
+import com.expensetracker.model.dto.YearExpensesDTO;
 import com.expensetracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,12 @@ public class ExpenseController {
     ResponseEntity<List<Expense>> getExpensesBetween(@RequestParam(name = "month") @Range(min = 1, max = 12) int month,
                                                      @RequestParam(name = "year") @Range(min = 2020, max = 2099) int year) {
         return ResponseEntity.ok().body(expenseService.getAllExpensesPeriodByDate(month, year));
+    }
+
+    @GetMapping("/expenses/categories")
+    ResponseEntity<List<CategoryExpensesDTO>> getTotalExpensesValueByCategories(@RequestParam(name = "month") @Range(min = 1, max = 12) int month,
+                                                                                @RequestParam(name = "year") @Range(min = 2020, max = 2099) int year) {
+        return ResponseEntity.ok().body(expenseService.getCategoriesExpensesByMonth(month, year));
     }
 
 

@@ -1,6 +1,6 @@
 <template>
-    <main class="container" style="margin-top: 10px; height: 25vw;">
-        <div style="height:10vh; width:20vw">
+    <main class="container chartContainer">
+        <div class="chartDimensions">
             <Bar v-if="loaded" :chart-data="chartData" />
         </div>
     </main>
@@ -51,10 +51,8 @@ export default {
 
             this.axios.get("api/expenses/" + year)
                 .then(response => {
-                    if (response.data.length != 0) {
                         this.expensesYear = response.data;
                         this.createChartValues();
-                    }
                 })
                 .catch(error => {
                     console.log(error);
@@ -65,6 +63,13 @@ export default {
             return dayjs(Date.now()).format("YYYY");
         },
 
+        getMonthName(monthNumber) {
+            const date = new Date();
+            date.setMonth(monthNumber - 1);
+
+            return date.toLocaleString('en-US', { month: 'long' });
+        },
+
         createChartValues() {
             this.chartData.labels = [];
             this.chartData.datasets.at(0).data = [];
@@ -72,7 +77,7 @@ export default {
             this.chartData.datasets.at(2).data = [];
 
             for(var i = 0; i < this.expensesYear.length; ) {
-               this.chartData.labels.push(this.expensesYear.at(i).date);
+               this.chartData.labels.push(this.getMonthName(this.expensesYear.at(i).date));
 
                if((this.expensesYear.length > i + 1) && this.expensesYear.at(i).date == this.expensesYear.at(i + 1).date) {
                     if(this.expensesYear.at(i).transaction === "IN") {

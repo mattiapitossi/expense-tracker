@@ -1,66 +1,53 @@
 <template>
    <main class="container">
-      <div class="py-5">
-         <h1>HOME</h1>
+      <div class="container categories tableContainer tableShadow chartSize">
+            <div class="py-1 d-flex justify-content-center">
+               <button class="btn-margin btn btn-success"
+                  @click="changeMonthAndYearValue(-1); $refs.monthChart.updateMonthExpensesChart(this.time.month, this.time.year)"
+                  v-html="leftArrow">
+               </button>
+               <h3>{{ getMonthName(time.month) }} {{ time.year }}</h3>
+               <button class="btn-margin btn btn-success"
+                  @click="changeMonthAndYearValue(1); $refs.monthChart.updateMonthExpensesChart(this.time.month, this.time.year)"
+                  v-html="rightArrow">
+               </button>
+            </div>
+            <Bar class="py-1 d-flex justify-content-center" ref="monthChart" />
       </div>
-      <div class="container" style="width:30vw; float: left;">
-         <div class="py-1 d-flex justify-content-center">
-            <button class="btn-margin btn btn-success"
-               @click="changeMonthAndYearValue(-1); $refs.monthChart.updateMonthExpensesChart(this.time.month, this.time.year)"
-               v-html="leftArrow">
-            </button>
-            <h3>{{ getMonthName(time.month) }} {{ time.year }}</h3>
-            <button class="btn-margin btn btn-success"
-               @click="changeMonthAndYearValue(1); $refs.monthChart.updateMonthExpensesChart(this.time.month, this.time.year)"
-               v-html="rightArrow">
-            </button>
-         </div>
-         <Bar class="py-1 d-flex justify-content-center" ref="monthChart" />
+      <div class="container categories tableContainer tableShadow chartSize">
+            <div class="py-1 d-flex justify-content-center">
+               <h3>Wallet distribution</h3>
+            </div>
+            <Pie class="py-1 d-flex justify-content-center" ref="walletChart" />
       </div>
-      <div class="container" style="width:30vw; float: right;">
-         <div class="py-1 d-flex justify-content-center">
-            <h3>Wallet distribution</h3>
-         </div>
-         <Polar class="py-1 d-flex justify-content-center" ref="walletChart" />
-      </div>
-      <div class="container" style="width:30vw; float: left;">
-         <div class="py-1 d-flex justify-content-center">
-            <button class="btn-margin btn btn-success"
-               @click="this.year += Number(-1); $refs.yearChart.getYearExpenses(year)"
-               v-html="leftArrow">
-            </button>
-            <h3>Expenses {{ year }}</h3>
-            <button class="btn-margin btn btn-success"
-               @click="this.year += Number(1); $refs.yearChart.getYearExpenses(year)"
-               v-html="rightArrow">
-            </button>
-         </div>
-         <MixedChart class="py-1 d-flex justify-content-center" ref="yearChart" />
+      <div class="container categories tableContainer tableShadow chartSize">
+            <div class="py-1 d-flex justify-content-center">
+               <button class="btn-margin btn btn-success"
+                  @click="this.year += Number(-1); $refs.yearChart.getYearExpenses(year)"
+                  v-html="leftArrow">
+               </button>
+               <h3>Expenses {{ year }}</h3>
+               <button class="btn-margin btn btn-success"
+                  @click="this.year += Number(1); $refs.yearChart.getYearExpenses(year)"
+                  v-html="rightArrow">
+               </button>
+            </div>
+            <MixedChart class="py-1 d-flex justify-content-center" ref="yearChart" />
       </div>
    </main>
 </template>
 
 <script>
 import Bar from "@/components/partials/BarChart.vue";
-import Polar from "@/components/partials/PolarArea.vue";
+import Pie from "@/components/partials/Pie.vue";
 import MixedChart from "@/components/partials/MixedChart.vue";
 
 export default {
    name: "Home",
-   components: { Bar, Polar, MixedChart },
+   components: { Bar, Pie, MixedChart },
 
    data() {
       return {
-         chartData: {
-            labels: ['January', 'February', 'March'],
-            datasets: [
-               {
-                  label: 'Data One',
-                  backgroundColor: '#f87979',
-                  data: [40, 20, 12]
-               }
-            ]
-         },
          //Today year and date ->
          time: {
             month: Number(this.getTodayMonth()),

@@ -1,6 +1,6 @@
 <template>
-  <main class="container" style="margin-top: 10px; height: 25vw;">
-    <div style="height:10vh; width:20vw">
+  <main class="container chartContainer">
+    <div class="chartDimensions">
       <Bar v-if="loaded" :chart-data="chartData" />
     </div>
   </main>
@@ -23,15 +23,15 @@ export default {
         labels: [],
         datasets: [
           {
-            label: 'Expenses Value',
-            backgroundColor: '#f87979',
+            label: 'Categories Total Out Value',
+            backgroundColor: '#bb2d3b',
             data: []
           }
         ]
       },
       expenses: null,
       totalValue: [],
-      expensesdate: [],
+      categories: [],
       time: {
         month: Number(this.getTodayMonth()),
         year: Number(this.getTodayYear())
@@ -44,7 +44,7 @@ export default {
   methods: {
     updateMonthExpensesChart(month, year) {
       this.isLoading = true;
-      this.axios.get("api/expenses/date?month=" + month + "&year=" + year)
+      this.axios.get("api/expenses/categories?month=" + month + "&year=" + year)
         .then(response => {
           this.expenses = response.data;
           this.createChartValues();
@@ -53,24 +53,17 @@ export default {
 
     createChartValues() {
       this.totalValue = [];
-      this.expensesdate = [];
+      this.categories = [];
       this.expenses.forEach((expense) => {
-        if (expense.typeOfTransaction === "OUT" || expense.typeOfTransaction === "OUTIN") {
-          if (this.totalValue.length === 0) {
-            this.totalValue.push(expense.value);
-          } else {
-            this.totalValue.push(Number(this.totalValue.at(-1)) + Number(expense.value));
-          }
-
-          this.expensesdate.push(expense.expense_date);
-        }
+      this.totalValue.push(expense.value);
+      this.categories.push(expense.category.name);
       });
 
       this.populateChart();
     },
 
     populateChart() {
-      this.chartData.labels = this.expensesdate;
+      this.chartData.labels = this.categories;
       this.chartData.datasets.at(-1).data = this.totalValue;
       this.loaded = true;
       this.isLoading = false;
