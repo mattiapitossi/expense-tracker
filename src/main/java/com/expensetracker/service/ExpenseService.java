@@ -7,7 +7,6 @@ import com.expensetracker.model.dto.CategoryExpensesDTO;
 import com.expensetracker.model.dto.YearExpensesDTO;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ExpenseService {
     boolean expenseWithCategoryExist(Long categoryId);
@@ -22,9 +21,9 @@ public interface ExpenseService {
 
     List<Expense> getAllExpensesPeriodByDate(int month, int year);
 
-    List<YearExpensesDTO> getAllExpensesByYear(int year);
+    List<YearExpensesDTO> getAllExpensesBy(int year);
 
-    List<CategoryExpensesDTO> getCategoriesExpensesByMonth(int month, int year);
+    List<CategoryExpensesDTO> getCategoriesExpensesBy(int month, int year);
 
     void deleteExpenseById(Long expenseId);
 

@@ -32,12 +32,12 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
 
     @Override
     public boolean expenseWithCategoryExist(Long categoryId) {
-        return expenseRepository.existsByCategory_Id(categoryId);
+        return expenseRepository.existsByCategoryId(categoryId);
     }
 
     @Override
     public boolean expenseWithWalletExist(Long walletId) {
-        return expenseRepository.existsByWallet_Id(walletId);
+        return expenseRepository.existsByWalletId(walletId);
     }
 
     @Override
@@ -71,21 +71,21 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
     }
 
     @Override
-    public List<YearExpensesDTO> getAllExpensesByYear(int year) {
+    public List<YearExpensesDTO> getAllExpensesBy(int year) {
         LocalDate localDate = LocalDate.now().withYear(year);
         LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfYear());
         LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfYear());
 
-        return expenseRepository.getExpensesByYear(startDate, endDate);
+        return expenseRepository.getExpensesBy(startDate, endDate);
     }
 
     @Override
-    public List<CategoryExpensesDTO> getCategoriesExpensesByMonth(int month, int year) {
+    public List<CategoryExpensesDTO> getCategoriesExpensesBy(int month, int year) {
         LocalDate localDate = LocalDate.now().withMonth(month).withYear(year);
         LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfMonth());
 
-        return expenseRepository.getCategoryExpensesByMonth(startDate, endDate);
+        return expenseRepository.getCategoryExpensesBy(startDate, endDate);
     }
 
     @Override

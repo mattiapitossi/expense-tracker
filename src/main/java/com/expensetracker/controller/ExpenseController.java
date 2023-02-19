@@ -38,14 +38,14 @@ public class ExpenseController {
 
     @GetMapping("/expenses/categories")
     ResponseEntity<List<CategoryExpensesDTO>> getTotalExpensesValueByCategories(@RequestParam(name = "month") @Range(min = 1, max = 12) int month,
-                                                                                @RequestParam(name = "year") @Range(min = 2020, max = 2099) int year) {
-        return ResponseEntity.ok().body(expenseService.getCategoriesExpensesByMonth(month, year));
+                                                                                @RequestParam(name = "year") @Range(min = 2000, max = 2099) int year) {
+        return ResponseEntity.ok().body(expenseService.getCategoriesExpensesBy(month, year));
     }
 
 
     @GetMapping("/expenses/{year:^20[2-9]\\d$}")
     ResponseEntity<List<YearExpensesDTO>> getExpensesBetween(@PathVariable(name = "year") int year) {
-        return ResponseEntity.ok().body(expenseService.getAllExpensesByYear(year));
+        return ResponseEntity.ok().body(expenseService.getAllExpensesBy(year));
     }
 
     @DeleteMapping("/expenses/{id}")

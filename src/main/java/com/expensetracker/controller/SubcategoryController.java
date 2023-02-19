@@ -24,8 +24,8 @@ public class SubcategoryController {
         return ResponseEntity.ok().body(subcategoryService.getAllSubcategories());
     }
 
-    @GetMapping("/subcategory/{id}")
-    ResponseEntity<List<Subcategory>> readSubcategoriesFromCategoryName(@PathVariable(name = "id") String categoryName) {
+    @GetMapping("/subcategories/{name}")
+    ResponseEntity<List<Subcategory>> readSubcategoriesFromCategoryName(@PathVariable(name = "name") String categoryName) {
         return ResponseEntity.ok().body(subcategoryService.getAllSubcategoriesFromCategoryName(categoryName));
     }
 

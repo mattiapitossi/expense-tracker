@@ -338,7 +338,7 @@ export default {
 
       getSubcategoriesFromCategory() {
             this.isLoadingForm = true;
-            this.axios.get("api/subcategory/" + this.data.category)
+            this.axios.get("api/subcategories/" + this.data.category)
               .then(response => {
                   this.subcategories = response.data;
                   if (this.subcategories != 0) {

@@ -14,9 +14,9 @@ import java.util.List;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    boolean existsByCategory_Id(Long id);
+    boolean existsByCategoryId(Long id);
 
-    boolean existsByWallet_Id(Long id);
+    boolean existsByWalletId(Long id);
 
     List<Expense> getExpenseByWallet(Wallet wallet);
 
@@ -26,11 +26,11 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("select new com.expensetracker.model.dto.CategoryExpensesDTO(e.category, SUM(e.value)) " +
             "from Expense e " +
             "where e.typeOfTransaction = 'OUT' AND e.expenseDate between ?1 and ?2 GROUP BY e.category")
-    List<CategoryExpensesDTO> getCategoryExpensesByMonth(LocalDate startDate, LocalDate endDate);
+    List<CategoryExpensesDTO> getCategoryExpensesBy(LocalDate startDate, LocalDate endDate);
 
     @Query("Select new com.expensetracker.model.dto.YearExpensesDTO(MONTH(e.expenseDate), SUM(e.value), e.typeOfTransaction) " +
             "FROM Expense e " +
             "WHERE e.expenseDate between ?1 and ?2 " +
             "GROUP BY MONTH(e.expenseDate), e.typeOfTransaction ORDER BY MONTH(e.expenseDate) ASC")
-    List<YearExpensesDTO> getExpensesByYear(LocalDate startDate, LocalDate endDate);
+    List<YearExpensesDTO> getExpensesBy(LocalDate startDate, LocalDate endDate);
 }
