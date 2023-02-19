@@ -1,5 +1,7 @@
 package com.expensetracker.service.impl;
 
+import com.expensetracker.model.dto.CategoryExpensesDTO;
+import com.expensetracker.model.dto.YearExpensesDTO;
 import com.expensetracker.mapper.ExpenseMapper;
 import com.expensetracker.model.*;
 import com.expensetracker.repository.CategoryRepository;
@@ -30,12 +32,12 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
 
     @Override
     public boolean expenseWithCategoryExist(Long categoryId) {
-        return expenseRepository.existsByCategory_Id(categoryId);
+        return expenseRepository.existsByCategoryId(categoryId);
     }
 
     @Override
     public boolean expenseWithWalletExist(Long walletId) {
-        return expenseRepository.existsByWallet_Id(walletId);
+        return expenseRepository.existsByWalletId(walletId);
     }
 
     @Override
@@ -65,6 +67,24 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
         LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfMonth());
 
         return expenseRepository.getExpenseByExpenseDateBetween(startDate, endDate);
+    }
+
+    @Override
+    public List<YearExpensesDTO> getAllExpensesBy(int year) {
+        LocalDate localDate = LocalDate.now().withYear(year);
+        LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfYear());
+        LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfYear());
+
+        return expenseRepository.getExpensesBy(startDate, endDate);
+    }
+
+    @Override
+    public List<CategoryExpensesDTO> getCategoriesExpensesBy(int month, int year) {
+        LocalDate localDate = LocalDate.now().withMonth(month).withYear(year);
+        LocalDate startDate = localDate.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDate = localDate.with(TemporalAdjusters.lastDayOfMonth());
+
+        return expenseRepository.getCategoryExpensesBy(startDate, endDate);
     }
 
     @Override
@@ -107,8 +127,6 @@ public class ExpenseServiceImpl implements com.expensetracker.service.ExpenseSer
 
         expense.setCategory(category);
         expense.setWallet(wallet);
-        System.out.println(expense.getCategory());
-        System.out.println(expense.getWallet());
         BeanUtils.copyProperties(expense, oldExpense);
 
         return expenseRepository.save(oldExpense);

@@ -5,7 +5,7 @@
 header {
    width: 100%;
    text-align: center;
-   background-color: $red;
+   background-color: #0b5ed7;
    display: flex;
    justify-content: center;
    position: fixed;
@@ -54,4 +54,63 @@ header {
    margin-left: 20px;
 }
 
+table tr:nth-child(even) td{
+   background-color: rgb(235, 235, 235);
+}
+
+table td {
+   max-width: 250px;
+   word-break: break-all;
+}
+
+table thead {
+   color: white; 
+   background-color: #198754;
+}
+
+.tableContainer {
+   position: relative; 
+   border-radius: 25px;  
+   padding: 20px; 
+   background:white; 
+   top:20px; 
+   margin: 20px
+}
+
+.tableShadow {
+   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.chartSize {
+   width:30vw;
+   max-height: 500px;
+   margin: auto;
+   margin-bottom: 20px;
+}
+
+.chartDimensions {
+   height:10vh; 
+   width:20vw;
+}
+
+.chartContainer {
+   margin-top: 10px; 
+   height: 25vw;
+}
+
+.negativeExpense {
+   color: $negativeExpense;
+}
+
+.positiveExpense {
+   color: $positiveExpense;
+}
+
+.halfSizeSelectOption {
+   width: 206px;
+}
+
+.fullSizeSelectOption {
+   width: 428px;
+}
 //ANIMATION

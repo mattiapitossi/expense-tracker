@@ -1,68 +1,69 @@
 <template>
     <main class="container">
-        <div class="d-flex justify-content-between py-5">
-            <h1>WALLETS</h1>
-            <button class="btn btn-success" @click="animateModal(true)">ADD WALLET</button>
+        
+        <div class="tableContainer tableShadow">
+            <div class="d-flex justify-content-between py-3">
+                <h1>WALLETS</h1>
+                <button class="btn btn-success" @click="animateModal(true)">ADD WALLET</button>
+            </div>
+
+            <!-- //MODAL// -->
+            <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
+
+            <!-- //TODO CLOSE BUTTON -->
+            <div v-show="showModal" class="pop_up_form">
+
+                <Loading v-if="isLoadingForm" />
+                <form v-else @submit.prevent="modify ? modifyWallet() : addWallet()">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" v-model="data.name"
+                            placeholder="Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="value" class="form-label">Value</label>
+                        <input type="number" class="form-control" id="value" name="value" v-model="data.value" step="0.01">
+                    </div>
+                    <div class="py-3 d-flex justify-content-center">
+                        <button :disabled="data.name == null || data.name.length == 0"
+                        type="submit" class="btn btn-primary d-block">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- //TABLE -->
+            <div class="d-flex justify-content-center">
+
+                <Loading v-if="isLoading" />
+
+                <table v-else class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="d-none">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="wallet in wallets" :key="wallet.id">
+                            <th scope="row" class="d-none">{{ wallet.id }}</th>
+                            <td>{{ wallet.name }}</td>
+                            <td>{{ wallet.value }} €</td>
+                            <td>
+                                <button @click="animateModal(true), fillFormFields(wallet)" class="btn btn-primary mx-2">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button @click="deleteWallet(wallet.id)" class="btn btn-danger mx-2">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
-
-        <!-- //MODAL// -->
-        <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
-
-        <!-- //TODO CLOSE BUTTON -->
-        <div v-show="showModal" class="pop_up_form">
-
-            <Loading v-if="isLoadingForm" />
-            <form v-else @submit.prevent="modify ? modifyWallet() : addWallet()">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" v-model="data.name"
-                        placeholder="Name">
-                </div>
-                <div class="mb-3">
-                    <label for="value" class="form-label">Value</label>
-                    <input type="number" class="form-control" id="value" name="value" v-model="data.value" placeholder="0.0" step="0.01">
-                </div>
-                <div class="py-3 d-flex justify-content-center">
-                    <button :disabled="data.name == null || data.name.length == 0"
-                    type="submit" class="btn btn-primary d-block">Submit</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- //TABLE -->
-        <div class="d-flex justify-content-center">
-
-            <Loading v-if="isLoading" />
-
-            <table v-else class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Value</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="wallet in wallets" :key="wallet.id">
-                        <th scope="row">{{ wallet.id }}</th>
-                        <td>{{ wallet.name }}</td>
-                        <td>{{ wallet.value }} €</td>
-                        <td>
-                            <button @click="animateModal(true), fillFormFields(wallet)" class="btn btn-primary mx-2">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button @click="deleteWallet(wallet.id)" class="btn btn-danger mx-2">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-
     </main>
 </template>
 

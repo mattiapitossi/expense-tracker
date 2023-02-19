@@ -21,6 +21,11 @@ public class SubcategoryService {
         return subcategoryRepository.findAll();
     }
 
+
+    public List<Subcategory> getAllSubcategoriesFromCategoryName(String categoryName) {
+        return subcategoryRepository.findByCategory_Name(categoryName);
+    }
+
     public Subcategory createNewSubcategory(Subcategory subcategory) {
         Category category = categoryService.findByName(subcategory.getCategory().getName());
         subcategory.setCategory(category);

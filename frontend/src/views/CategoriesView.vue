@@ -2,9 +2,9 @@
     <main class="container">
 
         <!-- //MODAL// -->
-        <div class="back_overlay" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
+        <div class="back_overlay" style="z-index: 2;" @click="animateModal(false)" v-show="showModal"></div> <!-- //OVERLAY -->
 
-        <div v-show="showModal" class="pop_up_form">
+        <div v-show="showModal" class="pop_up_form" style="z-index: 3;">
             <!-- //TODO CLOSE BUTTON -->
 
             <Loading v-if="isLoadingForm" />
@@ -14,15 +14,15 @@
             ">
                 <div v-if="subcategoryOperation" class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" v-model="dataSubcategory.name" placeholder="Name">
+                    <input required type="text" class="form-control" id="name" name="name" v-model="dataSubcategory.name" placeholder="Name">
                 </div>
                 <div v-else class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" v-model="dataCategory.name" placeholder="Name">
+                    <input required type="text" class="form-control" id="name" name="name" v-model="dataCategory.name" placeholder="Name">
                 </div>
                 <div v-if="subcategoryOperation" class="mb-3 me-3 d-inline-block">
                     <label for="category" class="form-label d-block">Category</label>
-                    <select name="category" id="category" v-model="dataSubcategory.category">
+                    <select required name="category" id="category" v-model="dataSubcategory.category" class="fullSizeSelectOption">
                     <option v-for="item in categories" :key="item.id" :value="item.name">{{ item.name }}</option>
                     </select>
                 </div>
@@ -53,10 +53,9 @@
 
         <!-- //TABLE -->
         <div class="d-flex">
-            
             <!-- // CATEGORIES -->
-            <div class="categories">
-                <div class="d-flex justify-content-between py-5">
+            <div class="categories tableContainer tableShadow">
+                <div class="d-flex justify-content-between py-3">
                     <h1>CATEGORIES</h1>
                     <button class="btn btn-success" 
                         @click="animateModal(true), subcategoryOperation = false"
@@ -79,8 +78,8 @@
             </div>
 
             <!-- // SUBCATEGORIES -->
-            <div class="categories">
-                <div class="d-flex justify-content-between py-5">
+            <div class="categories tableContainer tableShadow">
+                <div class="d-flex justify-content-between py-3">
                     <h1>SUBCATEGORIES</h1>
                     <button class="btn btn-success" @click="animateModal(true), subcategoryOperation = true">ADD SUBCATEGORY</button>
                 </div>
@@ -99,7 +98,6 @@
                     />
                 </div>
             </div>
-
         </div>
     </main>
 </template>
@@ -197,6 +195,7 @@ export default {
             this.axios.put("api/category", this.dataCategory)
                 .then(response => {
                     this.getCategories()
+                    this.getSubcategories()
                     this.isLoadingForm = false
                     this.animateModal(false);
                 })
@@ -210,6 +209,7 @@ export default {
 
             this.axios.put("api/subcategory", this.dataSubcategory)
                 .then(response => {
+                    this.getCategories()
                     this.getSubcategories()
                     this.isLoadingForm = false
                     this.animateModal(false);
@@ -257,8 +257,6 @@ export default {
         fillFormFields(category) {
             //modify mode ON
             this.modify = true
-            console.log(category);
-
 
             if (this.subcategoryOperation) {
                 this.dataSubcategory.id = category.id;
@@ -285,7 +283,6 @@ export default {
         },
 
         animateModal(action) {
-            console.log(this.dataSubcategory);
             ///check if form is sending new expense
             if (!this.isLoadingForm) {
 

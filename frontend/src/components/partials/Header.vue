@@ -1,5 +1,5 @@
 <template>
-   <header>
+   <header style="position: sticky; z-index: 1;">
       <RouterLink class="nav_item" :to="{name: 'home'}">
          Home
       </RouterLink>
