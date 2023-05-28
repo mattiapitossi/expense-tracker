@@ -1,8 +1,9 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.model.Expense;
-import com.expensetracker.model.dto.CategoryExpensesDTO;
-import com.expensetracker.model.dto.YearExpensesDTO;
+import com.expensetracker.model.Subcategory;
+import com.expensetracker.model.dto.response.*;
+import com.expensetracker.model.dto.request.ExpenseRequestDTO;
 import com.expensetracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -42,6 +44,11 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenseService.getCategoriesExpensesBy(month, year));
     }
 
+    @GetMapping("/expenses/subcategories")
+    ResponseEntity<Map<Long, SubcategoryYearRecapDTO>> getYearRecapBySubcategories(@RequestParam(name = "year") @Range(min = 2000, max = 2099) int year) {
+        return ResponseEntity.ok().body(expenseService.getSubcategoriesExpensesBy(year));
+    }
+
 
     @GetMapping("/expenses/{year:^20[2-9]\\d$}")
     ResponseEntity<List<YearExpensesDTO>> getExpensesBetween(@PathVariable(name = "year") int year) {
@@ -56,20 +63,20 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses")
-    ResponseEntity<Expense> createExpense(@Valid @RequestBody Expense expense) throws URISyntaxException {
-        Expense result = expenseService.createNewExpense(expense);
+    ResponseEntity<ExpenseResponseDTO> createExpense(@Valid @RequestBody ExpenseRequestDTO expense) throws URISyntaxException {
+        ExpenseResponseDTO result = expenseService.createNewExpense(expense);
         return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
     }
 
     @PostMapping("/expenses/{id}")
-    ResponseEntity<Expense> duplicateExpense(@PathVariable(name = "id") Long expenseId) throws URISyntaxException {
-        Expense result = expenseService.duplicateExpense(expenseId);
+    ResponseEntity<ExpenseResponseDTO> duplicateExpense(@PathVariable(name = "id") Long expenseId) throws URISyntaxException {
+        ExpenseResponseDTO result = expenseService.duplicateExpense(expenseId);
         return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
     }
 
     @PutMapping("/expenses")
-    ResponseEntity<Expense> modifyExpense(@Valid @RequestBody Expense expense) throws URISyntaxException {
-        Expense result = expenseService.modifyExpense(expense);
+    ResponseEntity<ExpenseResponseDTO> modifyExpense(@Valid @RequestBody ExpenseRequestDTO expense) throws URISyntaxException {
+        ExpenseResponseDTO result = expenseService.modifyExpense(expense);
         return ResponseEntity.created(new URI("/api/expenses" + result.getId())).body(result);
     }
 

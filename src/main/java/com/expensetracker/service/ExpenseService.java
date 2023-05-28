@@ -2,11 +2,13 @@ package com.expensetracker.service;
 
 import com.expensetracker.model.Expense;
 import com.expensetracker.model.ExpensePeriod;
+import com.expensetracker.model.Subcategory;
 import com.expensetracker.model.Wallet;
-import com.expensetracker.model.dto.CategoryExpensesDTO;
-import com.expensetracker.model.dto.YearExpensesDTO;
+import com.expensetracker.model.dto.response.*;
+import com.expensetracker.model.dto.request.ExpenseRequestDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ExpenseService {
     boolean expenseWithCategoryExist(Long categoryId);
@@ -15,7 +17,7 @@ public interface ExpenseService {
 
     List<Expense> expensesLinkedToWallet(Wallet wallet);
 
-    Expense duplicateExpense(Long expenseId);
+    ExpenseResponseDTO duplicateExpense(Long expenseId);
 
     List<Expense> getAllExpenses();
 
@@ -25,11 +27,13 @@ public interface ExpenseService {
 
     List<CategoryExpensesDTO> getCategoriesExpensesBy(int month, int year);
 
+    Map<Long, SubcategoryYearRecapDTO> getSubcategoriesExpensesBy(int year);
+
     void deleteExpenseById(Long expenseId);
 
-    Expense createNewExpense(Expense expense);
+    ExpenseResponseDTO createNewExpense(ExpenseRequestDTO expense);
 
-    Expense modifyExpense(Expense expense);
+    ExpenseResponseDTO modifyExpense(ExpenseRequestDTO expense);
 
     void saveExpenseFromPeriod(ExpensePeriod expensePeriod);
 }

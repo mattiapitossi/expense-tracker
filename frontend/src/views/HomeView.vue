@@ -1,5 +1,63 @@
 <template>
    <main class="container">
+      <!-- //TABLE -->
+      <div class="d-flex justify-content-center">
+
+         <table class="table">
+            <thead>
+               <tr>
+                  <th scope="col" class="d-none">#</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Subcategory</th>
+                  <th scope="col">January</th>
+                  <th scope="col">February</th>
+                  <th scope="col">March</th>
+                  <th scope="col">April</th>
+                  <th scope="col">May</th>
+                  <th scope="col">June</th>
+                  <th scope="col">July</th>
+                  <th scope="col">August</th>
+                  <th scope="col">September</th>
+                  <th scope="col">October</th>
+                  <th scope="col">November</th>
+                  <th scope="col">December</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr v-for="expense in expenses" :key="expense.id">
+
+                  <th scope="row" class="d-none">{{ expense.subcategory.name }}</th>
+                  <td>{{ expense.subcategory.category.name }}</td>
+                  <td>{{ expense.subcategory.name }}</td>
+                  <td>{{ expense.january}}</td>
+                  <td>{{ expense.february}}</td>
+                  <td>{{ expense.march}}</td>
+                  <td>{{ expense.april}}</td>
+                  <td>{{ expense.may}}</td>
+                  <td>{{ expense.june}}</td>
+                  <td>{{ expense.july}}</td>
+                  <td>{{ expense.august}}</td>
+                  <td>{{ expense.september}}</td>
+                  <td>{{ expense.october}}</td>
+                  <td>{{ expense.november}}</td>
+                  <td>{{ expense.december}}</td>
+               </tr>
+            </tbody>
+         </table>
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
       <div class="container categories tableContainer tableShadow chartSize">
             <div class="py-1 d-flex justify-content-center">
                <button class="btn-margin btn btn-success"
@@ -57,6 +115,7 @@ export default {
          rightArrow: "&gt",
          leftArrow: "&lt",
          expensesYear: null,
+         expenses: null,
       }
    },
 
@@ -64,7 +123,6 @@ export default {
       getYearExpenses() {
          this.axios.get("api/expenses/" + this.year)
             .then(response => {
-
                //check if no wallets are present
                if (response.data.length != 0) {
                   this.expensesYear = response.data;
@@ -107,6 +165,18 @@ export default {
             this.time.month = 1;
          }
       },
+
+      getYearExpensesPerSubcategories(year) {
+      this.axios.get("api/expenses/subcategories?year=" + year)
+         .then(response => {
+            console.log(JSON.stringify(response.data))
+            this.expenses = response.data;
+         });
+      }
+   },
+
+   mounted() {
+      this.getYearExpensesPerSubcategories(this.time.year);
    }
 }
 

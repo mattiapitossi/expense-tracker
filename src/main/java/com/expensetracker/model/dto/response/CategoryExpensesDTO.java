@@ -1,4 +1,4 @@
-package com.expensetracker.model.dto;
+package com.expensetracker.model.dto.response;
 
 import com.expensetracker.model.Category;
 

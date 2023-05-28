@@ -49,6 +49,20 @@
                      <option value="IN">IN</option>
                   </select>
                </div>
+               <div v-if="data.typeOfTransaction === 'IN'" class="mb-3">
+                  <label for="expense_budgets" class="form-label">Budgets</label>
+                  <div id="addBudgetInputs" @click="addBudget()" class="btn">Add Budget</div>
+                  <div v-for="budget in data.budgets" v-bind:key="budget.category">
+                     <div class="mb-3 me-3 d-inline-block">
+                        <select required name="category" id="category" v-model="budget.category" class="halfSizeSelectOption">
+                           <option v-for="item in categories" :key="item.id" :value="item.name">{{ item.name }}</option>
+                        </select>
+                     </div>
+                     <div class="mb-3 me-3 d-inline-block">
+                        <input required type="number" class="form-control halfSizeSelectOption" id="value" name="value" v-model="budget.value" placeholder="10" step="1" min="1" max="100" @input="handleBudgetsInput">
+                     </div>
+                  </div>
+               </div>
                <div class="mb-3">
                   <label for="expense_date" class="form-label">Date</label>
                   <input required type="date" class="form-control" id="expense_date" name="expense_date" v-model="data.expense_date">
@@ -153,6 +167,7 @@ export default {
          subcategories: null,
          rightArrow: "&gt",
          leftArrow: "&lt",
+         budgetsCounter: 0,
          //form field ->
          data: {
             id: null,
@@ -163,7 +178,8 @@ export default {
             category: null,
             subcategory: null,
             wallet: null,
-            typeOfTransaction: "OUT"
+            typeOfTransaction: "OUT",
+            budgets: []
          },
          //Today year and date ->
          time: {
@@ -281,6 +297,9 @@ export default {
                this.getMonthExpenses()
                this.isLoadingForm = false
                this.animateModal(false);
+               if(response.data.message) {
+                  alert(response.data.message);
+               }
             })
             .catch(error => {
                console.log(error);
@@ -294,6 +313,9 @@ export default {
             .then(response => {
                this.getMonthExpenses();
                this.isLoading = false;
+               if(response.data.message) {
+                  alert(response.data.message);
+               }
             })
             .catch(error => {
                console.log(error);
@@ -375,6 +397,18 @@ export default {
          }
 
          this.getMonthExpenses();
+      },
+
+      addBudget() {
+         if(this.categories.length > this.data.budgets.length) {
+            var budget = {category: this.categories.at(this.data.budgets.length).name, value: 0}
+            this.data.budgets.push(budget);
+         }
+      },
+
+      handleBudgetsInput: function(event) {
+         var value = event.target.value;
+         
       },
 
       fillFormFields(expense) {

@@ -15,6 +15,9 @@
       <RouterLink class="nav_item" :to="{name: 'period'}">
          Expenses Period
       </RouterLink>
+      <RouterLink class="nav_item" :to="{name: 'budgets'}">
+         Budgets
+      </RouterLink>
    </header>
 </template>
 
